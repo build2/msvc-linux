@@ -1,0 +1,30 @@
+#!/bin/sh
+
+# SDK
+#
+SDK="C:\Program Files (x86)\Windows Kits\8.1"
+
+INCLUDE="$SDK\include\shared;$SDK\include\um;$SDK\include\winrt"
+LIB="$SDK\lib\winv6.3\um\x86"
+
+# CRT
+#
+CRT="C:\Program Files (x86)\Windows Kits\10"
+VER="10.0.10150.0"
+
+INCLUDE="$CRT\include\\$VER\ucrt;$INCLUDE"
+LIB="$CRT\lib\\$VER\ucrt\x86;$LIB"
+
+# VC
+#
+VC="C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC"
+
+INCLUDE="$VC\include;$INCLUDE"
+LIB="$VC\lib;$LIB"
+
+export INCLUDE
+export LIB
+
+export WINEDEBUG=fixme-all
+
+exec wine "$VC\bin\cl.exe" $*
