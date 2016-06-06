@@ -1,0 +1,121 @@
+#! /usr/bin/env bash
+
+# Note: shouldn't be executed directly.
+
+# Translate absolute POSIX path to a Windows path with winepath.
+#
+function translate () # <path>
+{
+  if [[ "$1" == /* ]]; then
+    winepath -w "$1"
+  else
+    echo "$1"
+  fi
+}
+
+# Split the combined option and path value, translate the path component
+# to a Windows path if absolute, then recombine the option and path.
+#
+function split_translate () # <length> <option-path>
+{
+  local o="${2:0:$1}" # First <length> characters from $1.
+  local v="${2:$1}"   # The rest.
+
+  # If the path is absolute, map it with winepath.
+  #
+  if [[ "$v" == /* ]]; then
+    v="$(winepath -w "$v")"
+  fi
+
+  echo "$o$v"
+}
+
+# The <diag> argument should be 1 or 2. It indicates whether the diagnostics
+# is sent to stdout (1) or stderr (2).
+#
+# Note that if <exe> returns non-zero exit status, then this function calls
+# exit, not return. It also clears the ERR trap and overrides the EXIT trap.
+# All this pretty much means it should be the last statement in a call.
+#
+function msvc_exec () # <diag> <exe> <arg>...
+{
+  local diag=$1
+  shift
+
+  local exe="$1"
+  shift
+
+  # Assemble the arguments in an array to store in case they contain spaces.
+  #
+  local args=()
+
+  while [ $# -gt 0 ]; do
+    args=("${args[@]}" "$1")
+    shift
+  done
+
+  # Translate absolute Windows paths back to POSIX. The hard part here is to
+  # determing the end of the path. For example, the error location has the
+  # 'X:\...\foo(10):' form. However, we cannot assume that '(' ends the path;
+  # remember 'Program Files (x86)'.
+  #
+  # To sidestep this whole mess we are going to use this trick: instead of
+  # translating the whole path we will only translate its directory part, that
+  # is the longest part that still ends with the directory separator. We will
+  # also still recognize ':' and ''' as path terminators as well as space if
+  # it is the first character in the component.
+  #
+  # We also pass the path through realpath in order to get the actual path
+  # rather than Wine's dosdevices links.
+  #
+
+  # First delimit paths that we need to translate with NUL characters.
+  #
+  local s1="s#[A-Z]:[\\/]([^ ':][^':]*[\\/])*#\x00&\x00#g"
+
+  # Next translate the paths (note the -z sed option). The last xargs call
+  # does two things: it removes the newline added by realpath and adds the
+  # trailing slash removed by realpath.
+  #
+  # Substitution useful for debugging: #/bin/echo -n '&'#
+  #
+  local s2="s#^[A-Z]:[\\/]([^ ':][^':]*[\\/])*#winepath -u0 '&' | \
+xargs -0 realpath -z | xargs -0 -I{} /bin/echo -n {}/#e"
+
+  # Finally, get rid of the NUL characters. While at it, also kill Windows
+  # CR (0x0d).
+  #
+  local s3="s#\x00##g;s#\x0d##g"
+
+  # For testing/debugging:
+  #
+  #cat input | sed -re "$s1" | sed -z -re "$s2" | sed -re "$s3"
+
+  # Suppress Wine noise.
+  #
+  export WINEDEBUG=fixme-all
+
+  # Create a temporary named pipe.
+  #
+  local pipe="$(mktemp -u)"
+  mkfifo $pipe
+  trap "{ rm $pipe; }" EXIT
+
+  if [ $diag -eq 1 ]; then
+    wine "$exe" "${args[@]}" 2>&1 1>$pipe &
+    sed -re "$s1" $pipe | sed -z -re "$s2" | sed -re "$s3"
+  else
+    wine "$exe" "${args[@]}" 2>$pipe &
+    sed -re "$s1" $pipe | sed -z -re "$s2" | sed -re "$s3" 1>&2
+  fi
+
+  # Wait for the wine process and exit with its exit status if it's not
+  # zero. Don't you just hate bash sometimes? I sure do.
+  #
+  trap - ERR
+  wait $!
+  local r=$?
+  if [ $r -ne 0 ]; then
+    exit $r
+  fi
+}

@@ -1,20 +1,6 @@
 #! /usr/bin/env bash
 
-trap 'exit 1' ERR
+src="$(dirname $(realpath ${BASH_SOURCE[0]}))"
 
-SDK="C:\Program Files (x86)\Windows Kits\8.0"
-
-INCLUDE="$SDK\include\shared;$SDK\include\um;$SDK\include\winrt"
-LIB="$SDK\lib\win8\um\x86"
-
-VC="C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC"
-
-INCLUDE="$VC\include;$INCLUDE"
-LIB="$VC\lib;$LIB"
-
-export INCLUDE
-export LIB
-
-export WINEDEBUG=fixme-all
-
-wine "$VC\bin\cl.exe" $*
+source "$src/msvc-11"
+source "$src/msvc-cl-common"

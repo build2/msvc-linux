@@ -1,0 +1,13 @@
+@@ link.exe option translation.
+
+@@ Requires GNU sed 4.2.2 or later (-z), realpath dirpath
+
+@@ Still need wineserver for /EP, etc. otherwise long pause.
+
+@@ Redirection of /EP to /dev/null is slow, to file is much faster.
+
+@@ What about 64-bit? cl-64 or some such?
+
+@@ I think options are not case-sensitive.
+
+@@ There is link command. link.exe? cl-14.exe?
