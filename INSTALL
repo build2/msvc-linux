@@ -1,0 +1,137 @@
+Setup
+=====
+
+Install Wine
+------------
+
+You need 1.7.55 or later. Previous versions are known not to work with Visual
+Studio 14.
+
+For Ubuntu:
+
+# add-apt-repository ppa:ubuntu-wine/ppa
+# apt-get update
+# apt-get install --no-install-recommends winbind
+# apt-get install wine1.7 wine-mono4.5.6 wine-gecko2.40
+
+
+Configure Wine
+--------------
+
+$ winecfg
+
+If it suggests installing some stuff, ignore it. Change the platform to
+Windows 7 (later version will probably also work).
+
+
+Prepare to Copy Visual Studio
+-----------------------------
+
+Note that below we assume that you have installed Visual Studio in the default
+location.
+
+Mount the VM disk (make sure it is not running) where you installed Visual
+Studio. First get the second partition offset (<O>) and sector size (normally
+512, as below).
+
+# fdisk -lu .../windows-7.img
+
+Then mount via the loopback device:
+
+# losetup -o $((512*<O>)) /dev/loop0 ./windows-7.img
+# mount -o ro /dev/loop0 /mnt
+
+When finished copying Visual Studio, unmount and delete the loopback:
+
+# umount /mnt
+# losetup -d /dev/loop0
+
+
+Copy and Setup Visual Studio 11
+-------------------------------
+
+$ mkdir -p ".wine/drive_c/Program Files (x86)/Microsoft Visual Studio 11.0"
+$ cp -r "/mnt/Program Files (x86)/Microsoft Visual Studio 11.0/VC" \
+  ".wine/drive_c/Program Files (x86)/Microsoft Visual Studio 11.0/"
+$ cp "/mnt/Program Files (x86)/Microsoft Visual Studio 11.0/Common7/IDE/mspdb110.dll" \
+  ".wine/drive_c/Program Files (x86)/Microsoft Visual Studio 11.0/VC/bin/"
+
+$ mkdir -p ".wine/drive_c/Program Files (x86)/Windows Kits"
+$ cp -r "/mnt/Program Files (x86)/Windows Kits/8.0" \
+  ".wine/drive_c/Program Files (x86)/Windows Kits/"
+
+Run the VC11 redistributable DLLs installer for x86 from .../VC/redist/1033/.
+
+Add override for msvcr110.dll: run winecfg, select the "Libraries" tab, then
+enter the DLL name and "Add".
+
+
+Copy and Setup Visual Studio 12
+-------------------------------
+
+$ mkdir -p ".wine/drive_c/Program Files (x86)/Microsoft Visual Studio 12.0"
+$ cp -r "/mnt/Program Files (x86)/Microsoft Visual Studio 12.0/VC" \
+  ".wine/drive_c/Program Files (x86)/Microsoft Visual Studio 12.0/"
+
+$ mkdir -p ".wine/drive_c/Program Files (x86)/Windows Kits"
+$ cp -r "/mnt/Program Files (x86)/Windows Kits/8.1" \
+  ".wine/drive_c/Program Files (x86)/Windows Kits/"
+
+Run the VC12 redistributable DLLs installer for x86 from .../VC/redist/1033/.
+
+Add override for msvcr120.dll: run winecfg, select the "Libraries" tab, then
+enter the DLL name and "Add".
+
+
+Copy and Setup Visual Studio 14
+-------------------------------
+
+$ mkdir -p ".wine/drive_c/Program Files (x86)/Microsoft Visual Studio 14.0"
+$ cp -r "/mnt/Program Files (x86)/Microsoft Visual Studio 14.0/VC" \
+  ".wine/drive_c/Program Files (x86)/Microsoft Visual Studio 14.0/"
+
+$ mkdir -p ".wine/drive_c/Program Files (x86)/Windows Kits"
+$ cp -r "/mnt/Program Files (x86)/Windows Kits/8.1" \
+  ".wine/drive_c/Program Files (x86)/Windows Kits/"
+$ cp -r "/mnt/Program Files (x86)/Windows Kits/10" \
+  ".wine/drive_c/Program Files (x86)/Windows Kits/"
+
+Installing via the redistributable DLLs still does not work as of Wine 1.7.55.
+Instead, we have to manually copy a bunch of DLLs from /mnt/Windows/SysWoW64/
+to VC/bin/ and add Wine overrides (run winecfg, select the "Libraries" tab,
+then enter the DLL name and "Add").
+
+To discover the list of DLLs, run cl-14 to compile and link and executable
+(see Test below): any DLL that causes an error needs an override.
+
+For Wine 1.7.55 the list is:
+
+  api-ms-win-crt-runtime-l1-1-0.dll
+  ucrtbase.dll
+  api-ms-win-crt-locale-l1-1-0.dll
+  api-ms-win-crt-heap-l1-1-0.dll
+  vcruntime140.dll
+  api-ms-win-crt-stdio-l1-1-0.dll
+  api-ms-win-crt-conio-l1-1-0.dll
+
+
+Test
+----
+
+cl-NN /EHsc /TP hello-world.cxx
+./hello-world.exe
+
+
+Usage
+=====
+
+To suppress Wine debug messages (especially advisable if running executables
+built with more recent Visual Studio versions) you may want to add the
+following line to your .bashrc or similar:
+
+export WINEDEBUG=fixme-all
+
+Keeping wineserver running seems to help with performance (especially
+for /E and /EP modes for some reason):
+
+$ wineserver -p
