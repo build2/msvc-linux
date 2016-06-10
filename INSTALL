@@ -1,6 +1,31 @@
 Setup
 =====
 
+Setting Scripts
+---------------
+
+The "driver" scripts that you will be invoking are cl-NN, lib-NN, and link-NN,
+where NN is the Visual Studio version (e.g., 11, 12, 14, etc). There are also
+the "configuration" scripts, msvc-NN, which provide the Visual Studio/SDK
+location and configuration (in a way similar to vcvars32.bat). There is also a
+bunch of other helper scripts that you will not need to modify or invoke
+directly.
+
+All of these scripts should reside in the same directory. In particular, you
+cannot copy, say, cl-NN to /usr/local/bin/ while leaving the rest in some
+other directory -- this will not work. What you can do, however, is create
+symlinks to the driver scripts in /usr/local/bin/ -- this will work.
+
+If you only need to make the scripts usable by a single user, then the easiest
+approach is to add the script's directory to your PATH in, say, .bashrc, for
+example:
+
+export PATH=$HOME/msvc-linux:$PATH
+
+Alternatively, if you have something like ~/bin/ that is already in PATH, then
+you can simply add symlinks to the scripts.
+
+
 Install Wine
 ------------
 
