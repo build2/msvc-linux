@@ -111,9 +111,17 @@ enter the DLL name and "Add".
 Copy and Setup Visual Studio 14
 -------------------------------
 
+Note: if using 14 Update 2, then use the *-14u2 driver scripts.
+
 $ mkdir -p ".wine/drive_c/Program Files (x86)/Microsoft Visual Studio 14.0"
 $ cp -r "/mnt/Program Files (x86)/Microsoft Visual Studio 14.0/VC" \
   ".wine/drive_c/Program Files (x86)/Microsoft Visual Studio 14.0/"
+$ cp "/mnt/Program Files (x86)/Microsoft Visual Studio 14.0/VC/redist/x86/Microsoft.VC140.CRT/msvcp140.dll" \
+  ".wine/drive_c/Program Files (x86)/Microsoft Visual Studio 14.0/VC/bin/"
+
+Remove Microsoft's "experience improvement data uploade" which crashes:
+
+$ rm ".wine/drive_c/Program Files (x86)/Microsoft Visual Studio 14.0/VC/bin/vctip.exe"
 
 $ mkdir -p ".wine/drive_c/Program Files (x86)/Windows Kits"
 $ cp -r "/mnt/Program Files (x86)/Windows Kits/8.1" \
