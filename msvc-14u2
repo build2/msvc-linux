@@ -1,0 +1,26 @@
+#! /usr/bin/env bash
+
+# MSVC 14U2 setup/configuration. Should set VC, INCLUDE, and LIB variables.
+#
+
+# SDK
+#
+SDK="C:\\Program Files (x86)\\Windows Kits\\10"
+VER="10.0.10586.0"
+
+INCLUDE="$SDK\\include\\$VER\\shared;$SDK\\include\\$VER\\um;$SDK\\include\\$VER\\winrt"
+LIB="$SDK\\lib\\$VER\\um\\x86"
+
+# CRT
+#
+CRT="C:\\Program Files (x86)\\Windows Kits\\10"
+
+INCLUDE="$CRT\\include\\$VER\\ucrt;$INCLUDE"
+LIB="$CRT\\lib\\$VER\\ucrt\\x86;$LIB"
+
+# VC
+#
+VC="C:\\Program Files (x86)\\Microsoft Visual Studio 14.0\\VC"
+
+INCLUDE="$VC\\include;$INCLUDE"
+LIB="$VC\\lib;$LIB"
