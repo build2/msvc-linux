@@ -111,6 +111,7 @@ enter the DLL name and "Add".
 Copy and Setup Visual Studio 14
 -------------------------------
 
+Note: 14 Update 2 requires Wine 1.9.8 or later (bug #34851).
 Note: if using 14 Update 2, then use the *-14u2 driver scripts.
 
 $ mkdir -p ".wine/drive_c/Program Files (x86)/Microsoft Visual Studio 14.0"
