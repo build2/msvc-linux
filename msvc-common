@@ -71,7 +71,7 @@ function msvc_exec () # <diag> <exe> <arg>...
 
   # First delimit paths that we need to translate with NUL characters.
   #
-  local s1="s#[A-Z]:[\\/]([^ ':][^':]*[\\/])*#\x00&\x00#g"
+  local s1="s#[A-Za-z]:[\\/]([^ ':][^':]*[\\/])*#\x00&\x00#g"
 
   # Next translate the paths (note the -z sed option). The last xargs call
   # does two things: it removes the newline added by realpath and adds the
@@ -79,7 +79,7 @@ function msvc_exec () # <diag> <exe> <arg>...
   #
   # Substitution useful for debugging: #/bin/echo -n '&'#
   #
-  local s2="s#^[A-Z]:[\\/]([^ ':][^':]*[\\/])*#winepath -u0 '&' | \
+  local s2="s#^[A-Za-z]:[\\/]([^ ':][^':]*[\\/])*#winepath -u0 '&' | \
 xargs -0 realpath -z | xargs -0 -I{} /bin/echo -n {}/#e"
 
   # Finally, get rid of the NUL characters. While at it, also kill Windows
