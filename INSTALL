@@ -165,7 +165,40 @@ following line to your .bashrc or similar:
 
 export WINEDEBUG=fixme-all
 
-Keeping wineserver running seems to help with performance (especially
-for /E and /EP modes for some reason):
+Certain executions of the cl compiler (e.g., /EP /showIncludes) are very
+slow unless wineserver is started and a special voodoo dance is performed:
 
+# Kill existing Wine processes if any.
+#
+$ pkill wineserver
+$ pkill .exe
+
+# Verify no Wine processes are running.
+#
+$ pgrep wineserver
+$ pgrep .exe
+
+# Prepare test file.
+#
+cat > test.cpp
+#include <iostream>
+^D
+
+# Get time without wineserver.
+#
+$ time cl-NN /EP /showIncludes test.cpp >/dev/null
+
+# Start wineserver.
+#
 $ wineserver -p
+$ pgrep wineserver
+
+# The voodoo part: the first execution after starting wineserver will
+# hang, but all subsequent ones should be much faster.
+#
+$ cl-NN /EP /showIncludes test.cpp >/dev/null
+^C
+
+# Get time with wineserver.
+#
+$ time cl-NN /EP /showIncludes test.cpp >/dev/null
