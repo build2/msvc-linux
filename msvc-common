@@ -97,7 +97,8 @@ xargs -0 realpath -z | xargs -0 -I{} /bin/echo -n {}/#e"
 
   # Create a temporary named pipe.
   #
-  local pipe="$(mktemp -u)"
+  local pipe
+  pipe="$(mktemp -u)"
   mkfifo $pipe
   trap "{ rm $pipe; }" EXIT
 
@@ -105,8 +106,25 @@ xargs -0 realpath -z | xargs -0 -I{} /bin/echo -n {}/#e"
     wine "$exe" "${args[@]}" 2>&1 1>$pipe &
     sed -re "$s1" $pipe | sed -z -re "$s2" | sed -re "$s3"
   else
-    wine "$exe" "${args[@]}" 2>$pipe &
+    # For some reason Wine is really slow when we redirect stdout to
+    # /dev/null. A lot slower than redirecting it to a file. This is observed
+    # with Wine 1.7, 1.8, and 1.9. As an admittedly bizarre workaround we are
+    # going to channel the output via a fifo. Yes, it does help, a lot.
+    #
+    local opipe
+    opipe="$(mktemp -u)"
+    mkfifo $opipe
+    trap "{ rm $pipe $opipe; }" EXIT
+
+    cat $opipe &
+    local pid=$!
+
+    wine "$exe" "${args[@]}" 2>$pipe >$opipe &
     sed -re "$s1" $pipe | sed -z -re "$s2" | sed -re "$s3" 1>&2
+
+    # Wait for cat. If it fails then the ERR trap will terminate us.
+    #
+    wait $pid
   fi
 
   # Wait for the wine process and exit with its exit status if it's not
