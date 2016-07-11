@@ -1,5 +1,8 @@
 @@ link.exe option translation.
 
+@@ Had to rename Windows.h to windows.h; /showIncludes seem to retain naming
+   from #include directive. Also WinBase.h, WinUser.h, WinNls.h, ... nsed?
+
 @@ Requires GNU sed 4.2.2 or later (-z), realpath dirpath
 
 @@ Still need wineserver for /EP, etc. otherwise long pause.
