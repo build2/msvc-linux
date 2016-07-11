@@ -1,7 +1,7 @@
 #! /usr/bin/env bash
 
-# Common cl.exe driver that expects the VC, INCLUDE, and LIB variables to
-# be set for the specific MSVC version/configuration.
+# Common rc.exe driver that expects the VC and INCLUDE variables to be set for
+# the specific MSVC version/configuration.
 
 trap "{ exit 1; }" ERR
 set -o errtrace # Trap in functions.
@@ -11,12 +11,6 @@ function error () { info "$*"; exit 1; }
 
 source $(dirname $(realpath ${BASH_SOURCE[0]}))/msvc-common
 
-# File descriptor where the diagnostics will be sent. Unless STDOUT is used
-# for something else (e.g., /E), cl.exe sends the diagnostics there.
-# Otherwise it goes to STDERR.
-#
-diag=1
-
 # Translate absolute paths from POSIX to Windows. Use bash array to store
 # arguments in case they contain spaces.
 #
@@ -25,8 +19,8 @@ diag=1
 # may look a lot like an absolute POSIX path (e.g., /nologo). The heuristics
 # that we are going to use here is that if the argument starts with / and
 # contains at least one more /, then we consider it an argument. Otherwise --
-# an options. We will also explicitly recognize certain options, like /D,
-# which may not fit this scheme well.
+# an options. We will also explicitly recognize certain options which may not
+# fit this scheme well.
 #
 # Note that the order of the cases is important. Specifically, we want, e.g.,
 # /D before /D*.
@@ -36,10 +30,9 @@ args=()
 while [ $# -gt 0 ]; do
   case $1 in
 
-    # /I <dir>, /AI <dir>
+    # /I <dir>
     #
-    [/-]I | \
-    [/-]AI)
+    [/-][Ii])
       args=("${args[@]}" "$1")
       shift
       args=("${args[@]}" "$(translate $1)")
@@ -48,57 +41,48 @@ while [ $# -gt 0 ]; do
 
     # /I<dir>
     #
-    [/-]I*)
+    [/-][Ii]*)
       args=("${args[@]}" "$(split_translate 2 $1)")
       shift
       ;;
 
-    # /AI<dir>
+    # /f[om] <file>
     #
-    [/-]AI*)
-      args=("${args[@]}" "$(split_translate 3 $1)")
-      shift
-      ;;
-
-    # /F*: <file>
-    #
-    [/-]F[adeimoprR]:)
+    [/-][fF][oOmM])
       args=("${args[@]}" "$1")
       shift
       args=("${args[@]}" "$(translate $1)")
       shift
       ;;
 
-    # /F*<file>, /T{p,c}<file>, /Yu<file>.
+    # /f[om]<file>
     #
-    [/-]F[adeimoprRUI]* | \
-    [/-]Tp*             | \
-    [/-]Tc*             | \
-    [/-]Yu*)
+    [/-][fF][oOmM]*)
       args=("${args[@]}" "$(split_translate 3 $1)")
       shift
       ;;
 
-    # /doc<file>
+    # /q <file>
     #
-    [/-]doc*)
-      args=("${args[@]}" "$(split_translate 4 $1)")
+    [/-][qQ])
+      args=("${args[@]}" "$1")
+      shift
+      args=("${args[@]}" "$(translate $1)")
       shift
       ;;
 
-    # @<file>
+    # /q<file>
     #
-    @*)
-      args=("${args[@]}" "$(split_translate 1 $1)")
+    [/-][qQ]*)
+      args=("${args[@]}" "$(split_translate 2 $1)")
       shift
       ;;
 
     # Handle other options with separate values. This makes sure we don't try
     # to path-translate them.
     #
-    [/-]D | \
-    [/-]U | \
-    [/-]link)
+    [/-][Dd] | \
+    [/-][Uu])
       args=("${args[@]}" "$1")
       shift
       args=("${args[@]}" "$1")
@@ -108,18 +92,7 @@ while [ $# -gt 0 ]; do
     # Handle other options with combined values that could possibly be
     # interpreted as paths, for example /DFOO=foo/bar.
     #
-    [/-]D* | \
-    [/-]V* | \
-    [/-]Yl*)
-      args=("${args[@]}" "$1")
-      shift
-      ;;
-
-    # Detect /E and /EP -- they change where the diagnostics is sent.
-    #
-    [/-]E | \
-    [/-]EP)
-      diag=2
+    [/-][Dd]*)
       args=("${args[@]}" "$1")
       shift
       ;;
@@ -140,6 +113,7 @@ while [ $# -gt 0 ]; do
 done
 
 export INCLUDE
-export LIB
 
-msvc_exec $diag "$VCBIN\\cl.exe" "${args[@]}"
+# rc.exe always sends diagnostics to stdout.
+#
+msvc_exec 1 "$SDKBIN\\rc.exe" "${args[@]}"

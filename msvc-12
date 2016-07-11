@@ -1,11 +1,14 @@
 #! /usr/bin/env bash
 
-# MSVC 12 setup/configuration. Should set VC, INCLUDE, and LIB variables.
+# MSVC 12 setup/configuration.
+#
+# Should set the SDKBIN, VCBIN, INCLUDE, and LIB variables.
 #
 
 # SDK
 #
 SDK="C:\\Program Files (x86)\\Windows Kits\\8.1"
+SDKBIN="$SDK\\bin\\x86"
 
 INCLUDE="$SDK\\include\\shared;$SDK\\include\\um;$SDK\\include\\winrt"
 LIB="$SDK\\lib\\winv6.3\\um\\x86"
@@ -13,6 +16,7 @@ LIB="$SDK\\lib\\winv6.3\\um\\x86"
 # VC
 #
 VC="C:\\Program Files (x86)\\Microsoft Visual Studio 12.0\\VC"
+VCBIN="$VC\\bin"
 
 INCLUDE="$VC\\include;$INCLUDE"
 LIB="$VC\\lib;$LIB"

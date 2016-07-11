@@ -3,7 +3,7 @@
 # @@ Do we really need LIB? What's /LIBPATH for?
 #
 # Common lib.exe driver that expects the VC and LIB variables to be set for
-# the specific MSVC version/configuration set.
+# the specific MSVC version/configuration.
 
 trap "{ exit 1; }" ERR
 set -o errtrace # Trap in functions.
@@ -90,6 +90,6 @@ done
 #
 export LIB
 
-# Lib.exe always sends diagnostics to stdout.
+# lib.exe always sends diagnostics to stdout.
 #
-msvc_exec 1 "$VC\\bin\\lib.exe" "${args[@]}"
+msvc_exec 1 "$VCBIN\\lib.exe" "${args[@]}"
