@@ -55,6 +55,10 @@ Prepare to Copy Visual Studio
 Note that below we assume that you have installed Visual Studio in the default
 location.
 
+The following instructions are for mounting the VM parition on Linux host.
+However, simply archiving the required directories on the running VM and
+copying them to the Linux host should work as well.
+
 Mount the VM disk (make sure it is not running) where you installed Visual
 Studio. First get the second partition offset (<O>) and sector size (normally
 512, as below).
@@ -85,6 +89,11 @@ $ mkdir -p ".wine/drive_c/Program Files (x86)/Windows Kits"
 $ cp -r "/mnt/Program Files (x86)/Windows Kits/8.0" \
   ".wine/drive_c/Program Files (x86)/Windows Kits/"
 
+Add lower-case symlinks for upper-case named headers:
+
+$ etc/lowercase-headers \
+  ".wine/drive_c/Program Files (x86)/Windows Kits/8.0/Include"
+
 Run the VC11 redistributable DLLs installer for x86 from .../VC/redist/1033/.
 
 Add override for msvcr110.dll: run winecfg, select the "Libraries" tab, then
@@ -101,6 +110,11 @@ $ cp -r "/mnt/Program Files (x86)/Microsoft Visual Studio 12.0/VC" \
 $ mkdir -p ".wine/drive_c/Program Files (x86)/Windows Kits"
 $ cp -r "/mnt/Program Files (x86)/Windows Kits/8.1" \
   ".wine/drive_c/Program Files (x86)/Windows Kits/"
+
+Add lower-case symlinks for upper-case named headers:
+
+$ etc/lowercase-headers \
+  ".wine/drive_c/Program Files (x86)/Windows Kits/8.1/Include"
 
 Run the VC12 redistributable DLLs installer for x86 from .../VC/redist/1033/.
 
@@ -129,6 +143,12 @@ $ cp -r "/mnt/Program Files (x86)/Windows Kits/8.1" \
   ".wine/drive_c/Program Files (x86)/Windows Kits/"
 $ cp -r "/mnt/Program Files (x86)/Windows Kits/10" \
   ".wine/drive_c/Program Files (x86)/Windows Kits/"
+
+Add lower-case symlinks for upper-case named headers:
+
+$ etc/lowercase-headers \
+  ".wine/drive_c/Program Files (x86)/Windows Kits/8.1/Include" \
+  ".wine/drive_c/Program Files (x86)/Windows Kits/10/Include"
 
 Installing via the redistributable DLLs still does not work as of Wine 1.7.55.
 Instead, we have to manually copy a bunch of DLLs from /mnt/Windows/SysWoW64/

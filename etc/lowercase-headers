@@ -1,0 +1,24 @@
+#! /usr/bin/env bash
+
+# Create all-lowercase symlinks for .h headers in <dir> (recursively) that
+# contain capital letters in their names.
+#
+usage="usage: $0 <dir>"
+
+trap "{ exit 1; }" ERR
+set -o errtrace # Trap in functions.
+
+function error () { echo "$*" 1>&2; exit 1; }
+
+if [ $# -eq 0 ]; then
+  error "$usage"
+fi
+
+for d in "$@"; do
+  find $d -type f -name '*[[:upper:]]*.h' |
+    while read f; do
+      b="$(basename "$f")"
+      d="$(dirname "$f")"
+      ln -s "$b" "$d/${b,,}"
+    done
+done
