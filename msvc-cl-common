@@ -31,6 +31,8 @@ diag=1
 # Note that the order of the cases is important. Specifically, we want, e.g.,
 # /D before /D*.
 #
+# Note also that cl.exe options are case-sensitive.
+#
 args=()
 
 while [ $# -gt 0 ]; do

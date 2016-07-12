@@ -25,14 +25,16 @@ source $(dirname $(realpath ${BASH_SOURCE[0]}))/msvc-common
 # Note that the order of the cases is important. Specifically, we want, e.g.,
 # /D before /D*.
 #
+# Note that rc.exe /? is missing some options that are documented in MSDN.
+#
 args=()
 
 while [ $# -gt 0 ]; do
-  case $1 in
+  case ${1^^} in # Uppercase for case-insensitive comparison.
 
     # /I <dir>
     #
-    [/-][Ii])
+    [/-]I)
       args=("${args[@]}" "$1")
       shift
       args=("${args[@]}" "$(translate $1)")
@@ -41,14 +43,14 @@ while [ $# -gt 0 ]; do
 
     # /I<dir>
     #
-    [/-][Ii]*)
+    [/-]I*)
       args=("${args[@]}" "$(split_translate 2 $1)")
       shift
       ;;
 
     # /f[om] <file>
     #
-    [/-][fF][oOmM])
+    [/-]F[OM])
       args=("${args[@]}" "$1")
       shift
       args=("${args[@]}" "$(translate $1)")
@@ -57,14 +59,14 @@ while [ $# -gt 0 ]; do
 
     # /f[om]<file>
     #
-    [/-][fF][oOmM]*)
+    [/-]F[OM]*)
       args=("${args[@]}" "$(split_translate 3 $1)")
       shift
       ;;
 
     # /q <file>
     #
-    [/-][qQ])
+    [/-]Q)
       args=("${args[@]}" "$1")
       shift
       args=("${args[@]}" "$(translate $1)")
@@ -73,7 +75,7 @@ while [ $# -gt 0 ]; do
 
     # /q<file>
     #
-    [/-][qQ]*)
+    [/-]Q*)
       args=("${args[@]}" "$(split_translate 2 $1)")
       shift
       ;;
@@ -81,8 +83,8 @@ while [ $# -gt 0 ]; do
     # Handle other options with separate values. This makes sure we don't try
     # to path-translate them.
     #
-    [/-][Dd] | \
-    [/-][Uu])
+    [/-]D | \
+    [/-]U)
       args=("${args[@]}" "$1")
       shift
       args=("${args[@]}" "$1")
@@ -92,7 +94,7 @@ while [ $# -gt 0 ]; do
     # Handle other options with combined values that could possibly be
     # interpreted as paths, for example /DFOO=foo/bar.
     #
-    [/-][Dd]*)
+    [/-]D*)
       args=("${args[@]}" "$1")
       shift
       ;;

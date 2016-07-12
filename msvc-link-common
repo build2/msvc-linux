@@ -22,27 +22,108 @@ source $(dirname $(realpath ${BASH_SOURCE[0]}))/msvc-common
 # an options. We will also explicitly recognize certain options which may
 # not fit this scheme well.
 #
+# Note that link.exe /? is missing some options that are documented in MSDN.
+#
 args=()
 
 while [ $# -gt 0 ]; do
-  case $1 in
+  case ${1^^} in # Uppercase for case-insensitive comparison.
 
-    # /DEF[:filename]
-    # /OUT:filename
+    # @@ TODO: handle the rest/obscure options.
     #
+    #  @file
+    #  /ASSEMBLYLINKRESOURCE:filename
+    #  /ASSEMBLYMODULE:filename
+    #  /ASSEMBLYRESOURCE:filename[,[name][,PRIVATE]]
+    #  /BASE:{address[,size]|@filename,key}
+    #+ /DEF:filename
+    #+ /DEFAULTLIB:library
+    #+ /DELAYLOAD:dll
+    #  /FASTGENPROFILE:PGD=filename|...
+    #  /GENPROFILE:PGD=filename|...
+    #+ /IDLOUT:filename
+    #+ /IMPLIB:filename
+    #+ /KEYFILE:filename
+    #+ /LIBPATH:dir
+    #+ /MANIFESTFILE:filename
+    #+ /MANIFESTINPUT:filename
+    #+ /MAP:filename
+    #+ /MIDL:@commandfile
+    #+ /NODEFAULTLIB:library
+    #+ /ORDER:@filename
+    #+ /OUT:filename
+    #+ /PDB:filename
+    #+ /PDBALTPATH:filename
+    #+ /PDBSTRIPPED:filename
+    #+ /PGD:filename
+    #+ /STUB:filename
+    #+ /TLBOUT:filename
+    #  /USEPROFILE:PGD=filename
+    #+ /WHOLEARCHIVE:library
+    #+ /WINMDFILE:filename
+    #  /WINMDKEYCONTAINER:name
+    #+ /WINMDKEYFILE:filename
+
     [/-]DEF:* | \
-    [/-]OUT:*)
+    [/-]MAP:* | \
+    [/-]OUT:* | \
+    [/-]PDB:* | \
+    [/-]PGD:*)
       args=("${args[@]}" "$(split_translate 5 $1)")
       shift
       ;;
 
-    # @@ TODO
-    #
+    [/-]STUB:*)
+      args=("${args[@]}" "$(split_translate 6 $1)")
+      shift
+      ;;
 
-    # /LIBPATH:dir
-    #
+    [/-]MIDL:@*)
+      args=("${args[@]}" "$(split_translate 7 $1)")
+      shift
+      ;;
+
+    [/-]IMPLIB:* | \
+    [/-]IDLOUT:* | \
+    [/-]TLBOUT:* | \
+    [/-]ORDER:@*)
+      args=("${args[@]}" "$(split_translate 8 $1)")
+      shift
+      ;;
+
+    [/-]KEYFILE:* | \
     [/-]LIBPATH:*)
       args=("${args[@]}" "$(split_translate 9 $1)")
+      shift
+      ;;
+
+    [/-]DELAYLOAD:* | \
+    [/-]WINMDFILE:*)
+      args=("${args[@]}" "$(split_translate 11 $1)")
+      shift
+      ;;
+
+    [/-]DEFAULTLIB:* | \
+    [/-]PDBALTPATH:*)
+      args=("${args[@]}" "$(split_translate 12 $1)")
+      shift
+      ;;
+
+    [/-]PDBSTRIPPED:*)
+      args=("${args[@]}" "$(split_translate 13 $1)")
+      shift
+      ;;
+
+    [/-]NODEFAULTLIB:* | \
+    [/-]MANIFESTFILE:* | \
+    [/-]WHOLEARCHIVE:* | \
+    [/-]WINMDKEYFILE:*)
+      args=("${args[@]}" "$(split_translate 14 $1)")
+      shift
+      ;;
+
+    [/-]MANIFESTINPUT:*)
+      args=("${args[@]}" "$(split_translate 15 $1)")
       shift
       ;;
 
@@ -50,13 +131,34 @@ while [ $# -gt 0 ]; do
     # to path-translate them.
     #
 
-    # @@ TODO
+    # Aren't any.
 
     # Handle other options with combined values that could possibly be
-    # interpreted as paths, for example /EXTRACT:foo/bar.obj.
+    # interpreted as paths.
     #
-
-    # @@ TODO
+    # /ENTRY:symbol
+    # /EXPORT:symbol
+    # /INCLUDE:symbol
+    # /KEYCONTAINER:name
+    # /MANIFESTDEPENDENCY:manifest dependency
+    # /MANIFESTUAC[:{NO|UAC fragment}]
+    # /MAPINFO:{EXPORTS}
+    # /MERGE:from=to
+    # /SECTION:name,[[!]{DEKPRSW}][,ALIGN=#]
+    #
+    [/-]ENTRY:*              | \
+    [/-]EXPORT:*             | \
+    [/-]INCLUDE:*            | \
+    [/-]KEYCONTAINER:*       | \
+    [/-]MANIFESTDEPENDENCY:* | \
+    [/-]MANIFESTUAC:*        | \
+    [/-]MAPINFO:*            | \
+    [/-]MERGE:*              | \
+    [/-]SECTION:*            | \
+    [/-]REMOVE:*)
+      args=("${args[@]}" "$1")
+      shift
+      ;;
 
     # Option or argument.
     #

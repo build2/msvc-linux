@@ -1,9 +1,11 @@
 #! /usr/bin/env bash
 
-# @@ Do we really need LIB? What's /LIBPATH for?
-#
 # Common lib.exe driver that expects the VC and LIB variables to be set for
 # the specific MSVC version/configuration.
+#
+# It's not clear/documented why we need LIB or what the /LIBPATH option is
+# for. Perhaps for link-time code generation (/LTCG).
+#
 
 trap "{ exit 1; }" ERR
 set -o errtrace # Trap in functions.
@@ -27,7 +29,7 @@ source $(dirname $(realpath ${BASH_SOURCE[0]}))/msvc-common
 args=()
 
 while [ $# -gt 0 ]; do
-  case $1 in
+  case ${1^^} in # Uppercase for case-insensitive comparison.
 
     # /DEF[:filename]
     # /OUT:filename
@@ -86,8 +88,6 @@ while [ $# -gt 0 ]; do
   esac
 done
 
-# @@ Do we need this?
-#
 export LIB
 
 # lib.exe always sends diagnostics to stdout.

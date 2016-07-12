@@ -4,12 +4,12 @@ Setup
 Setting Scripts
 ---------------
 
-The "driver" scripts that you will be invoking are cl-NN, lib-NN, and link-NN,
-where NN is the Visual Studio version (e.g., 11, 12, 14, etc). There are also
-the "configuration" scripts, msvc-NN, which provide the Visual Studio/SDK
-location and configuration (in a way similar to vcvars32.bat). There is also a
-bunch of other helper scripts that you will not need to modify or invoke
-directly.
+The "driver" scripts that you will be invoking are cl-NN, link-NN, lib-NN,
+etc., where NN is the Visual Studio version (e.g., 11, 12, 14, etc). There
+are also the "configuration" scripts, msvc-NN, which provide the Visual
+Studio/SDK location and configuration (in a way similar to vcvars32.bat).
+There is also a bunch of other helper scripts that you will not need to
+modify or invoke directly.
 
 All of these scripts should reside in the same directory. In particular, you
 cannot copy, say, cl-NN to /usr/local/bin/ while leaving the rest in some
