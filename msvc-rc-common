@@ -1,7 +1,7 @@
 #! /usr/bin/env bash
 
-# Common rc.exe driver that expects the VC and INCLUDE variables to be set for
-# the specific MSVC version/configuration.
+# Common rc.exe driver that expects the SDKBIN and INCLUDE variables to be set
+# for the specific MSVC version/configuration.
 
 trap "{ exit 1; }" ERR
 set -o errtrace # Trap in functions.

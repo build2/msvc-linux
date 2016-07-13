@@ -1,7 +1,7 @@
 #! /usr/bin/env bash
 
-# Common link.exe driver that expects the VC and LIB variables to be set for
-# the specific MSVC version/configuration.
+# Common link.exe driver that expects the VCBIN, SDKBIN, and LIB variables to
+# be set for the specific MSVC version/configuration.
 
 trap "{ exit 1; }" ERR
 set -o errtrace # Trap in functions.
@@ -176,6 +176,10 @@ while [ $# -gt 0 ]; do
 done
 
 export LIB
+
+# link.exe may need to run mt.exe which is in the SDK.
+#
+export WINEPATH=$SDKBIN
 
 # link.exe always sends diagnostics to stdout.
 #

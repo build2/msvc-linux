@@ -1,7 +1,8 @@
 #! /usr/bin/env bash
 
-# Common cl.exe driver that expects the VC, INCLUDE, and LIB variables to
-# be set for the specific MSVC version/configuration.
+# Common cl.exe driver that expects the VCBIN, INCLUDE, and, if running as a
+# linker, SDKBIN, LIB variables to be set for the specific MSVC
+# version/configuration.
 
 trap "{ exit 1; }" ERR
 set -o errtrace # Trap in functions.
@@ -143,5 +144,9 @@ done
 
 export INCLUDE
 export LIB
+
+# The linker may need to run mt.exe which is in the SDK.
+#
+export WINEPATH=$SDKBIN
 
 msvc_exec $diag "$VCBIN\\cl.exe" "${args[@]}"

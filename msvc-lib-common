@@ -1,6 +1,6 @@
 #! /usr/bin/env bash
 
-# Common lib.exe driver that expects the VC and LIB variables to be set for
+# Common lib.exe driver that expects the VCBIN and LIB variables to be set for
 # the specific MSVC version/configuration.
 #
 # It's not clear/documented why we need LIB or what the /LIBPATH option is
