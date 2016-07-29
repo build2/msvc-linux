@@ -1,8 +1,8 @@
 #! /usr/bin/env bash
 
-# MSVC 11 setup/configuration.
+# MSVC 11 32-bit setup/configuration.
 #
-# Should set the SDKBIN, VCBIN, INCLUDE, and LIB variables.
+# Should set the SDKBIN, VCBIN, VCDLL, INCLUDE, and LIB variables.
 #
 
 # SDK
@@ -17,6 +17,7 @@ LIB="$SDK\\lib\\win8\\um\\x86"
 #
 VC="C:\\Program Files (x86)\\Microsoft Visual Studio 11.0\\VC"
 VCBIN="$VC\\bin"
+VCDLL="$VC\\bin"
 
 INCLUDE="$VC\\include;$INCLUDE"
 LIB="$VC\\lib;$LIB"

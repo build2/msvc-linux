@@ -1,8 +1,8 @@
 #! /usr/bin/env bash
 
-# MSVC 14U2 setup/configuration.
+# MSVC 14U2 32-bit setup/configuration (note: using 64-to-32 cross-compiler).
 #
-# Should set the SDKBIN, VCBIN, INCLUDE, and LIB variables.
+# Should set the SDKBIN, VCBIN, VCDLL, INCLUDE, and LIB variables.
 #
 
 # SDK
@@ -25,7 +25,8 @@ LIB="$CRT\\lib\\$CRTVER\\ucrt\\x86;$LIB"
 # VC
 #
 VC="C:\\Program Files (x86)\\Microsoft Visual Studio 14.0\\VC"
-VCBIN="$VC\\bin"
+VCBIN="$VC\\bin\\amd64_x86"
+VCDLL="$VC\\bin\\amd64"
 
 INCLUDE="$VC\\include;$INCLUDE"
 LIB="$VC\\lib;$LIB"

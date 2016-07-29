@@ -32,12 +32,24 @@ Install Wine
 You need 1.7.55 or later. Previous versions are known not to work with Visual
 Studio 14.
 
-For Ubuntu:
+For Ubuntu, to install stable:
 
 # add-apt-repository ppa:ubuntu-wine/ppa
 # apt-get update
 # apt-get install --no-install-recommends winbind
 # apt-get install wine1.7 wine-mono4.5.6 wine-gecko2.40
+# apt-get install p11-kit-modules:i386 libp11-kit-gnome-keyring:i386
+
+
+For Ubuntu, to install staging (into /opt/):
+
+# add-apt-repository ppa:wine/wine-builds
+# apt-get update
+# apt-get install --install-recommends wine-staging
+
+To install compatibility symlinks:
+
+# apt-get install winehq-staging
 
 
 Configure Wine
@@ -94,10 +106,11 @@ Add lower-case symlinks for upper-case named headers:
 $ etc/lowercase-headers \
   ".wine/drive_c/Program Files (x86)/Windows Kits/8.0/Include"
 
-Run the VC11 redistributable DLLs installer for x86 from .../VC/redist/1033/.
+Run the VC11 redistributable DLLs installer for both x64 and x86 from
+.../VC/redist/1033/.
 
-Add override for msvcr110.dll: run winecfg, select the "Libraries" tab, then
-enter the DLL name and "Add".
+Add overrides for msvcr110.dll and msvcp110.dll: run winecfg, select the
+"Libraries" tab, then enter the DLL name and "Add".
 
 
 Copy and Setup Visual Studio 12
@@ -116,17 +129,19 @@ Add lower-case symlinks for upper-case named headers:
 $ etc/lowercase-headers \
   ".wine/drive_c/Program Files (x86)/Windows Kits/8.1/Include"
 
-Run the VC12 redistributable DLLs installer for x86 from .../VC/redist/1033/.
+Run the VC12 redistributable DLLs installer for both x64 and x86 from
+.../VC/redist/1033/.
 
-Add override for msvcr120.dll: run winecfg, select the "Libraries" tab, then
-enter the DLL name and "Add".
+Add overrides for msvcr120.dll and msvcp120.dll: run winecfg, select the
+"Libraries" tab, then enter the DLL name and "Add".
 
 
 Copy and Setup Visual Studio 14
 -------------------------------
 
-Note: 14 Update 2 requires Wine 1.9.8 or later (bug #34851).
-Note: if using 14 Update 2, then use the *-14u2 driver scripts.
+Note: If using 14 Update 2, then use the *-14u2 driver scripts.
+Note: 14 Update 2 requires Wine 1.9 or later (bug #34851).
+Note: 14 Update 2 is known to work with Wine 1.9.7, 1.9.8 but not 1.9.15.
 
 $ mkdir -p ".wine/drive_c/Program Files (x86)/Microsoft Visual Studio 14.0"
 $ cp -r "/mnt/Program Files (x86)/Microsoft Visual Studio 14.0/VC" \
@@ -136,7 +151,8 @@ $ cp "/mnt/Program Files (x86)/Microsoft Visual Studio 14.0/VC/redist/x86/Micros
 
 Remove Microsoft's "experience improvement data uploade" which crashes:
 
-$ rm ".wine/drive_c/Program Files (x86)/Microsoft Visual Studio 14.0/VC/bin/vctip.exe"
+$ find ".wine/drive_c/Program Files (x86)/Microsoft Visual Studio 14.0/" \
+  -name vctip.exe -exec rm -f '{}' ';'
 
 $ mkdir -p ".wine/drive_c/Program Files (x86)/Windows Kits"
 $ cp -r "/mnt/Program Files (x86)/Windows Kits/8.1" \
@@ -151,28 +167,36 @@ $ etc/lowercase-headers \
   ".wine/drive_c/Program Files (x86)/Windows Kits/10/Include"
 
 Installing via the redistributable DLLs still does not work as of Wine 1.7.55.
-Instead, we have to manually copy a bunch of DLLs from /mnt/Windows/SysWoW64/
-to VC/bin/ and add Wine overrides (run winecfg, select the "Libraries" tab,
-then enter the DLL name and "Add").
+Instead, we have to manually copy a bunch of DLLs from /mnt/Windows/{SysWoW64/
+System32/} to .wine/drive_c/windows/{syswow64/ system32/} and add Wine
+overrides (run winecfg, select the "Libraries" tab, then enter the DLL name
+and press "Add").
 
-To discover the list of DLLs, run cl-14 to compile and link and executable
-(see Test below): any DLL that causes an error needs an override.
+To discover the list of DLLs, run cl-14 to compile and link and an executable
+and then run the executable itself (see Test below): any DLL that causes an
+error needs an override.
 
-For Wine 1.7.55 the list is:
+For Wine 1.7.55-1.9.8 the list is:
 
   api-ms-win-crt-runtime-l1-1-0.dll
-  ucrtbase.dll
   api-ms-win-crt-locale-l1-1-0.dll
   api-ms-win-crt-heap-l1-1-0.dll
-  vcruntime140.dll
   api-ms-win-crt-stdio-l1-1-0.dll
   api-ms-win-crt-conio-l1-1-0.dll
+  ucrtbase.dll
+  vcruntime140.dll
+  msvcp140.dll
+
+The following overrides are necessary because of some unimplemented functions:
+
+  api-ms-win-crt-string-l1-1-0.dll
+  api-ms-win-crt-time-l1-1-0.dll
 
 
 Test
 ----
 
-cl-NN /EHsc /TP hello-world.cxx
+cl-NN /EHsc /MD /TP hello-world.cxx
 ./hello-world.exe
 
 
