@@ -1,3 +1,6 @@
+@@ When adding support to a new version need to check if any new options
+   were added to any of the tools.
+
 @@ Had to rename Windows.h to windows.h; /showIncludes seem to retain naming
    from #include directive. Also WinBase.h, WinUser.h, WinNls.h, ... nsed?
 
