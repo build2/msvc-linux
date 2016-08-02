@@ -1,0 +1,109 @@
+#! /usr/bin/env bash
+
+# Common mt.exe driver that expects the SDKBIN variable to be set for the
+# specific MSVC version/configuration.
+
+trap "{ exit 1; }" ERR
+set -o errtrace # Trap in functions.
+
+function info () { echo "$*" 1>&2; }
+function error () { info "$*"; exit 1; }
+
+source $(dirname $(realpath ${BASH_SOURCE[0]}))/msvc-common
+
+# Translate absolute paths from POSIX to Windows. Use bash array to store
+# arguments in case they contain spaces. This needs to be done for both
+# certain option values and arguments.
+#
+# Note that we assume mt.exe options start with '-' and are case-sensitive.
+#
+args=()
+
+while [ $# -gt 0 ]; do
+  case $1 in
+
+    # @@ TODO: handle for [;[#]<resource_id>]
+    #
+    #  -rgs:<file>
+    #  -tlb:<file>
+    #  -dll:<file>
+    #  -replacements:<file>
+    #  -managedassemblyname:<file>
+    #  -out:<file>
+    #  -inputresource:<file>[;[#]<resource_id>]
+    #  -outputresource:<file>[;[#]<resource_id>]
+    #  -updateresource:<file>[;[#]<resource_id>]
+    #  -hashupdate[:<path to the files>]
+    # -validate_file_hashes:<file>
+
+    -rgs:* | \
+    -tlb:* | \
+    -dll:* | \
+    -out:*)
+      args=("${args[@]}" "$(split_translate 5 $1)")
+      shift
+      ;;
+
+    -hashupdate:*)
+      args=("${args[@]}" "$(split_translate 12 $1)")
+      shift
+      ;;
+
+    -replacements:*)
+      args=("${args[@]}" "$(split_translate 14 $1)")
+      shift
+      ;;
+
+    -inputresource:*)
+      args=("${args[@]}" "$(split_translate 15 $1)")
+      shift
+      ;;
+
+    -outputresource:* | \
+    -updateresource:*)
+      args=("${args[@]}" "$(split_translate 16 $1)")
+      shift
+      ;;
+
+    -managedassemblyname:*)
+      args=("${args[@]}" "$(split_translate 21 $1)")
+      shift
+      ;;
+
+    -validate_file_hashes:*)
+      args=("${args[@]}" "$(split_translate 22 $1)")
+      shift
+      ;;
+
+    # Handle other options with separate values. This makes sure we don't try
+    # to path-translate them.
+    #
+
+    # None.
+
+    # Handle other options with combined values that could possibly be
+    # interpreted as paths.
+    #
+    -identity:*)
+      args=("${args[@]}" "$1")
+      shift
+      ;;
+
+    # Option or argument.
+    #
+    *)
+      # If starts with a slash, treat it as a path (options start with dash).
+      #
+      if [[ "$1" == /* ]]; then
+	args=("${args[@]}" "$(translate $1)")
+      else
+	args=("${args[@]}" "$1")
+      fi
+      shift
+      ;;
+  esac
+done
+
+# mt.exe always sends diagnostics to stdout.
+#
+msvc_exec 1 "$SDKBIN\\mt.exe" "${args[@]}"
