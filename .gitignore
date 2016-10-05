@@ -1,0 +1,5 @@
+# Compiler/linker output.
+#
+msvc-filter
+*.d
+*.o

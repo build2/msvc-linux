@@ -4,6 +4,11 @@ Setup
 Setting Scripts
 ---------------
 
+@@ Replace this section with a proper package build/install instructions when
+   the package name is finalized.
+@@ Interestingly INSTALL files for our packages provide instuctions how to
+   build the package but not how to install it.
+
 The "driver" scripts that you will be invoking are cl-NN, link-NN, lib-NN,
 etc., where NN is the Visual Studio version (e.g., 11, 12, 14, etc). There
 are also the "configuration" scripts, msvc-NN, which provide the Visual
@@ -11,10 +16,13 @@ Studio/SDK location and configuration (in a way similar to vcvars32.bat).
 There is also a bunch of other helper scripts that you will not need to
 modify or invoke directly.
 
-All of these scripts should reside in the same directory. In particular, you
-cannot copy, say, cl-NN to /usr/local/bin/ while leaving the rest in some
-other directory -- this will not work. What you can do, however, is create
-symlinks to the driver scripts in /usr/local/bin/ -- this will work.
+It is also required to build msvc-filter utility. To do that run build2 in the
+project's directory.
+
+All of these scripts and utility should reside in the same directory. In
+particular, you cannot copy, say, cl-NN to /usr/local/bin/ while leaving the
+rest in some other directory -- this will not work. What you can do, however,
+is create symlinks to the driver scripts in /usr/local/bin/ -- this will work.
 
 If you only need to make the scripts usable by a single user, then the easiest
 approach is to add the script's directory to your PATH in, say, .bashrc, for
@@ -212,41 +220,3 @@ built with more recent Visual Studio versions) you may want to add the
 following line to your .bashrc or similar:
 
 export WINEDEBUG=fixme-all
-
-Certain executions of the cl compiler (e.g., /EP /showIncludes) are very
-slow unless wineserver is started and a special voodoo dance is performed:
-
-# Kill existing Wine processes if any.
-#
-$ pkill wineserver
-$ pkill .exe
-
-# Verify no Wine processes are running.
-#
-$ pgrep wineserver
-$ pgrep .exe
-
-# Prepare test file.
-#
-cat > test.cpp
-#include <iostream>
-^D
-
-# Get time without wineserver.
-#
-$ time cl-NN /EP /showIncludes test.cpp >/dev/null
-
-# Start wineserver.
-#
-$ wineserver -p
-$ pgrep wineserver
-
-# The voodoo part: the first execution after starting wineserver will
-# hang, but all subsequent ones should be much faster.
-#
-$ cl-NN /EP /showIncludes test.cpp >/dev/null
-^C
-
-# Get time with wineserver.
-#
-$ time cl-NN /EP /showIncludes test.cpp >/dev/null

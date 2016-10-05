@@ -6,15 +6,10 @@
 @@ Had to rename Windows.h to windows.h; /showIncludes seem to retain naming
    from #include directive. Also WinBase.h, WinUser.h, WinNls.h, ... nsed?
 
-@@ Requires bash 4, GNU sed 4.2.2 or later (-z), realpath dirpath
+@@ Requires bash 4, realpath dirpath
 
 @@ Still need wineserver for /EP, etc. otherwise long pause.
 
 @@ What about 64-bit? cl-64 or some such?
 
 @@ There is link POSIX command. link.exe? cl-14.exe?
-
-@@ The /showIncludes run is very slow most likely due to the sed-based path
-   processing (but verify). Perhaps we should rewrite it in C++ with
-   translated path caching, etc. Test result: sed/winepath results in ~x5
-   slowdown.

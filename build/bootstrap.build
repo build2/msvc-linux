@@ -1,0 +1,19 @@
+# file      : build/bootstrap.build
+# copyright : Copyright (c) 2014-2016 Code Synthesis Ltd
+# license   : MIT; see accompanying LICENSE file
+
+project = msvc-linux
+
+using build@0.4.0
+
+version = 0.1.0-a1
+revision = 0
+
+dist.package = $project-$version
+
+if ($revision != 0)
+  dist.package += +$revision
+
+using config
+using dist
+using install
