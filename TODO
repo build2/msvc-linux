@@ -1,3 +1,5 @@
+@@ Support for WINEPREFIX so that a separate .wine/ can be used.
+
 @@ When adding support to a new version need to check if any new options
    were added to any of the tools.
 

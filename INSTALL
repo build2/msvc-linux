@@ -37,9 +37,8 @@ For Ubuntu, to install stable:
 # add-apt-repository ppa:ubuntu-wine/ppa
 # apt-get update
 # apt-get install --no-install-recommends winbind
-# apt-get install wine1.7 wine-mono4.5.6 wine-gecko2.40
+# apt-get install wine1.7
 # apt-get install p11-kit-modules:i386 libp11-kit-gnome-keyring:i386
-
 
 For Ubuntu, to install staging (into /opt/):
 
@@ -57,8 +56,13 @@ Configure Wine
 
 $ winecfg
 
-If it suggests installing some stuff, ignore it. Change the platform to
-Windows 7 (later version will probably also work).
+If it suggests installing some stuff (Gecko, Mono), refuse. Change the
+platform to Windows 7 (later version will probably also work).
+
+64-bit link.exe from Visual Studio 14 is known not to work with Mono that
+may have (still) been installed by winecfg. To remove it, run:
+
+$ wine64 uninstaller --remove '{E45D8920-A758-4088-B6C6-31DBB276992E}'
 
 
 Prepare to Copy Visual Studio
