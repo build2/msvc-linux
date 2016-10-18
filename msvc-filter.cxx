@@ -402,7 +402,12 @@ try
   isf.close ();
   isp.close ();
 
-  return pr.wait () ? 0 : pr.status;
+  // Passing through the exact child process exit status on failure tends to be
+  // a bit hairy as involves usage of WIFEXITED(), WEXITSTATUS() and handling
+  // the situation when the process is terminated with a signal and so exit
+  // code is unavailable. Lets implement when really required.
+  //
+  return pr.wait () ? 0 : 1;
 }
 catch (const ios_base::failure&)
 {
