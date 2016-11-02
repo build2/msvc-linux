@@ -9,6 +9,7 @@
 #include <string>
 #include <cstring>       // strchr()
 #include <ostream>
+#include <utility>       // move()
 #include <iostream>
 #include <algorithm>     // max()
 #include <system_error>
@@ -125,7 +126,7 @@ filter (const char* s, size_t n, ostream& os)
       // main()).
       //
       process pr (args, 0, -1, -2);
-      ifdstream is (pr.in_ofd);
+      ifdstream is (move (pr.in_ofd));
 
       string pd;
       getline (is, pd);
@@ -223,11 +224,12 @@ try
 
   // Stream to filter from.
   //
-  ifdstream isf (pr.in_efd, fdstream_mode::non_blocking);
+  ifdstream isf (move (pr.in_efd), fdstream_mode::non_blocking);
 
   // Stream to proxy from.
   //
-  ifdstream isp (diag == 1 ? -1 : pr.in_ofd, fdstream_mode::non_blocking);
+  ifdstream isp (
+    diag == 1 ? nullfd : move (pr.in_ofd), fdstream_mode::non_blocking);
 
   ostream& osf (diag == 1 ? cout : cerr);     // Stream to filter to.
   ostream* osp (diag == 1 ? nullptr : &cout); // Stream to proxy to.
@@ -403,9 +405,9 @@ try
   isp.close ();
 
   // Passing through the exact child process exit status on failure tends to be
-  // a bit hairy as involves usage of WIFEXITED(), WEXITSTATUS() and handling
-  // the situation when the process is terminated with a signal and so exit
-  // code is unavailable. Lets implement when really required.
+  // a bit hairy as involves handling the situation when the process is
+  // terminated with a signal and so exit code is unavailable. Lets implement
+  // when really required.
   //
   return pr.wait () ? 0 : 1;
 }
