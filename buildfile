@@ -6,23 +6,34 @@ define sh: file
 sh{*}: extension =
 sh{*}: install = bin/
 
-s = cl-11    cl-12    cl-14    cl-14u2             \
-    lib-11   lib-12   lib-14   lib-14u2            \
-    link-11  link-12  link-14  link-14u2           \
-    msvc-11  msvc-12  msvc-14  msvc-14u2           \
-    mt-11    mt-12    mt-14    mt-14u2             \
-    rc-11    rc-12    rc-14    rc-14u2             \
-                                                   \
-    msvc-cl-common msvc-common msvc-lib-common     \
-    msvc-link-common msvc-mt-common msvc-rc-common
+s = cl-11-32    cl-12-32    cl-14u0-32    cl-14u2-32    cl-14u2-64    \
+    lib-11-32   lib-12-32   lib-14u0-32   lib-14u2-32   lib-14u2-64   \
+    link-11-32  link-12-32  link-14u0-32  link-14u2-32  link-14u2-64  \
+    mt-11-32    mt-12-32    mt-14u0-32    mt-14u2-32    mt-14u2-64    \
+    rc-11-32    rc-12-32    rc-14u0-32    rc-14u2-32    rc-14u2-64    \
+                                                                      \
+    msvc-dispatch                                                     \
+                                                                      \
+    msvc-common/{msvc-cl-common msvc-common msvc-lib-common           \
+                 msvc-link-common msvc-mt-common msvc-rc-common}      \
+                                                                      \
+    msvc-11/{msvc-11-32}                                              \
+    msvc-12/{msvc-12-32}                                              \
+    msvc-14/{msvc-14u0-32 msvc-14u2-32 msvc-14u2-64}
 
-./: exe{msvc-filter} sh{$s} doc{INSTALL LICENSE NEWS README version} \
-    file{manifest}
 
-import libs = libbutl%lib{butl}
+./: msvc-common/exe{msvc-filter} sh{$s}                     \
+    doc{INSTALL LICENSE NEWS README version} file{manifest}
 
-exe{msvc-filter}: cxx{msvc-filter} $libs
+msvc-common/:
+{
+  import libs = libbutl%lib{butl}
+
+  exe{msvc-filter}: cxx{msvc-filter} $libs
+}
 
 # Don't install INSTALL file.
 #
 doc{INSTALL}@./: install = false
+
+install.bin.subdirs = true # Recreate subdirectories.

@@ -52,5 +52,5 @@ function msvc_exec () # <diag> <exe> <arg>...
   # POSIX mapping. If <diag> is 1 then both stdout and stderr output are read
   # and filtered.
   #
-  "$src_dir/msvc-filter" "$diag" wine "$@"
+  "$src_dir/msvc-common/msvc-filter" "$diag" wine "$@"
 }
