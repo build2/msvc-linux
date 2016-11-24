@@ -15,7 +15,7 @@ if [ $# -eq 0 ]; then
 fi
 
 for d in "$@"; do
-  find $d -type f -name '*[[:upper:]]*.h' |
+  find "$d" -type f -name '*[[:upper:]]*.h' |
     while read f; do
       b="$(basename "$f")"
       d="$(dirname "$f")"

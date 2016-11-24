@@ -46,7 +46,7 @@ shorter tool names, for example:
 for t in cl link lib mt rc; do \
   ln -s .../msvc-linux/$t-14u2-64 ~/bin/$t-14; done
 
-While you can modify the configuration scripts, retainig such modifications
+While you can modify the configuration scripts, retaining such modifications
 over updates will be tedious. As a result, there are several environment
 variables that you can set (e.g., in your .bashrc) to adjust some of the
 common configuration values.
