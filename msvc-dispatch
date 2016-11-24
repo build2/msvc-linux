@@ -1,0 +1,71 @@
+#! /usr/bin/env bash
+
+# Note: shouldn't be executed directly, src_exe and src_dir must be set.
+
+# The filename in src_exe should be in the <tool>-<version>-<target> form.
+# Based on that set some defaults, load the corresponding config file, and
+# then continue with one of the msvc-<tool>-common scripts.
+
+trap "{ exit 1; }" ERR
+set -o errtrace # Trap in functions.
+
+function info () { echo "$*" 1>&2; }
+function error () { info "$*"; exit 1; }
+
+# Split the argument. The <version> itself should be <major>[minor] where
+# <major> is digit-dot-only and minor should start with a non-digit-dot (e.g.,
+# u1, rc1, etc).
+#
+arg=($(echo "$(basename "$src_exe")" | \
+  sed -n -e 's/^\([^-]*\)-\([0-9.]*\)\([^-]*\)-\([^-]*\)$/\1 \4 \2 \3/p'))
+tool="${arg[0]}"
+target="${arg[1]}"
+
+major="${arg[2]}"
+minor="${arg[3]}"
+
+MAJOR="${arg[2]^^}"
+MINOR="${arg[3]^^}"
+
+if [ -z "$tool" -o -z "$major" -o -z "$target" ]; then
+  error "invalid top-level script name"
+fi
+
+# Calculate MSVC_WINEPREFIX and MSVC_INSTALLDIR.
+#
+# We have the following environment variable name hierarchy:
+#
+# MSVC_<MAJOR><MINOR>_*
+# MSVC_<MAJOR>_*
+# MSVC_*
+#
+# And we always reduce these to just MSVC_* which are used further down.
+#
+function lookup_value() # <name>
+{
+  local n="MSVC_${MAJOR}${MINOR}_$1"
+  local v="${!n}"
+
+  if [ -z "$v" ]; then
+    n="MSVC_${MAJOR}_$1"
+    v="${!n}"
+
+    if [ -z "$v" ]; then
+      n="MSVC_$1"
+      v="${!n}"
+    fi
+  fi
+
+  echo "$v"
+}
+
+MSVC_WINEPREFIX="$(lookup_value "WINEPREFIX")"
+MSVC_INSTALLDIR="$(lookup_value "INSTALLDIR")"
+
+# Load the configuration.
+#
+source "$src_dir/msvc-$major/msvc-$major$minor-$target"
+
+# Dispatch to the tool.
+#
+source "$src_dir/msvc-common/msvc-$tool-common"

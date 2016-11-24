@@ -1,0 +1,35 @@
+#! /usr/bin/env bash
+
+# MSVC 14U2 64-bit setup/configuration.
+#
+# Should set the SDKBIN, VCBIN, VCDLL, INCLUDE, and LIB variables.
+#
+if [ -z "$MSVC_INSTALLDIR" ]; then
+  MSVC_INSTALLDIR="Microsoft Visual Studio 14.0"
+fi
+
+# SDK
+#
+SDK="C:\\Program Files (x86)\\Windows Kits\\10"
+SDKBIN="$SDK\\bin\\x64"
+SDKVER="10.0.10586.0"
+
+INCLUDE="$SDK\\include\\$SDKVER\\shared;$SDK\\include\\$SDKVER\\um;$SDK\\include\\$SDKVER\\winrt"
+LIB="$SDK\\lib\\$SDKVER\\um\\x64"
+
+# CRT
+#
+CRT="C:\\Program Files (x86)\\Windows Kits\\10"
+CRTVER="10.0.10586.0"
+
+INCLUDE="$CRT\\include\\$CRTVER\\ucrt;$INCLUDE"
+LIB="$CRT\\lib\\$CRTVER\\ucrt\\x64;$LIB"
+
+# VC
+#
+VC="C:\\Program Files (x86)\\$MSVC_INSTALLDIR\\VC"
+VCBIN="$VC\\bin\\amd64"
+VCDLL="$VC\\bin\\amd64"
+
+INCLUDE="$VC\\include;$INCLUDE"
+LIB="$VC\\lib\\amd64;$LIB"

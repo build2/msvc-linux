@@ -1,6 +1,0 @@
-#! /usr/bin/env bash
-
-src="$(dirname $(realpath ${BASH_SOURCE[0]}))"
-
-source "$src/msvc-14u2"
-source "$src/msvc-cl-common"

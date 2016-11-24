@@ -1,0 +1,56 @@
+#! /usr/bin/env bash
+
+# Note: shouldn't be executed directly, src_dir must be set.
+
+# Translate absolute POSIX path to a Windows path with winepath.
+#
+function translate () # <path>
+{
+  if [[ "$1" == /* ]]; then
+    winepath -w "$1"
+  else
+    echo "$1"
+  fi
+}
+
+# Split the combined option and path value, translate the path component
+# to a Windows path if absolute, then recombine the option and path.
+#
+function split_translate () # <length> <option-path>
+{
+  local o="${2:0:$1}" # First <length> characters from $1.
+  local v="${2:$1}"   # The rest.
+
+  # If the path is absolute, map it with winepath.
+  #
+  if [[ "$v" == /* ]]; then
+    v="$(winepath -w "$v")"
+  fi
+
+  echo "$o$v"
+}
+
+# The <diag> argument should be 1 or 2. It indicates whether the diagnostics
+# is sent to stdout (1) or stderr (2).
+#
+function msvc_exec () # <diag> <exe> <arg>...
+{
+  local diag="$1"
+  shift
+
+  # Suppress Wine noise.
+  #
+  export WINEDEBUG=fixme-all
+
+  # Set an alternative .wine directory if requested.
+  #
+  if [ -n "$MSVC_WINEPREFIX" ]; then
+    export WINEPREFIX="$MSVC_WINEPREFIX"
+  fi
+
+  # Filter diagnostics output replacing absolute Windows paths with their
+  # POSIX mapping. If <diag> is 1 then both stdout and stderr output are read
+  # and filtered.
+  #
+  "$src_dir/msvc-filter" "$diag" wine "$@"
+}

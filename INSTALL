@@ -31,7 +31,11 @@ example:
 export PATH=$HOME/msvc-linux:$PATH
 
 Alternatively, if you have something like ~/bin/ that is already in PATH, then
-you can simply add symlinks to the scripts.
+you can simply add symlinks to the scripts. This way you can also choose
+shorter tool names, for example:
+
+for t in cl link lib mt rc; do \
+  ln -s .../msvc-linux/$t-14u2-64 ~/bin/$t-14; done
 
 
 Install Wine
