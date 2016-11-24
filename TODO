@@ -1,13 +1,4 @@
-@@ Support for WINEPREFIX so that a separate .wine/ can be used.
-
-@@ When adding support to a new version need to check if any new options
-   were added to any of the tools.
-
-@@ Requires bash 4, realpath dirpath
-
-@@ What about 64-bit? cl-64 or some such?
-
-@@ There is link POSIX command. link.exe? cl-14.exe?
+@@ Requires bash 4, realpath, dirname, basename
 
 @@ Rename to msvc-posix, msvc-cross, msvc-wine, msvc-unix. Or just
    keep it?

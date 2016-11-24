@@ -6,23 +6,32 @@ Setting Scripts
 
 @@ Replace this section with a proper package build/install instructions when
    the package name is finalized.
+
 @@ Interestingly INSTALL files for our packages provide instuctions how to
    build the package but not how to install it.
 
-The "driver" scripts that you will be invoking are cl-NN, link-NN, lib-NN,
-etc., where NN is the Visual Studio version (e.g., 11, 12, 14, etc). There
-are also the "configuration" scripts, msvc-NN, which provide the Visual
-Studio/SDK location and configuration (in a way similar to vcvars32.bat).
-There is also a bunch of other helper scripts that you will not need to
-modify or invoke directly.
+The "driver" scripts that you will be invoking have names in the following
+form:
 
-It is also required to build msvc-filter utility. To do that run build2 in the
-project's directory.
+<tool>-<version>-<target>
 
-All of these scripts and utility should reside in the same directory. In
-particular, you cannot copy, say, cl-NN to /usr/local/bin/ while leaving the
-rest in some other directory -- this will not work. What you can do, however,
-is create symlinks to the driver scripts in /usr/local/bin/ -- this will work.
+Where:
+
+<tool>     is one of 'cl' 'link' 'lib' 'mt' 'rc'
+<version>  is the Visual Studio version, for example, 11, 12, 14u2, 15rc1
+<target>   is the compiler target, for example, 32 (x86), 64 (x86_64).
+
+There are also the "configuration" scripts, msvc-NN/msvc-<version>-<target>,
+which provide the Visual Studio/SDK location and configuration (in a way
+similar to vcvars32.bat). There is also a bunch of other helper scripts that
+you will not need to modify or invoke directly. It is also required to build
+msvc-filter native utility using build2.
+
+All of these scripts and utilities should reside in the same directory. In
+particular, you cannot copy, say, cl-<...> to /usr/local/bin/ while leaving
+the rest in some other directory -- this will not work. What you can do,
+however, is create symlinks to the driver scripts in /usr/local/bin/ -- this
+will work.
 
 If you only need to make the scripts usable by a single user, then the easiest
 approach is to add the script's directory to your PATH in, say, .bashrc, for
@@ -31,11 +40,35 @@ example:
 export PATH=$HOME/msvc-linux:$PATH
 
 Alternatively, if you have something like ~/bin/ that is already in PATH, then
-you can simply add symlinks to the scripts. This way you can also choose
+you can simply add symlinks to the scripts there. This way you can also choose
 shorter tool names, for example:
 
 for t in cl link lib mt rc; do \
   ln -s .../msvc-linux/$t-14u2-64 ~/bin/$t-14; done
+
+While you can modify the configuration scripts, retainig such modifications
+over updates will be tedious. As a result, there are several environment
+variables that you can set (e.g., in your .bashrc) to adjust some of the
+common configuration values.
+
+Currently you can override WINEPREFIX and INSTALLDIR via the following
+environment variable hierarchy (from highest to lowest precedence):
+
+MSVC_<MAJOR><MINOR>_*   # MSVC_14U2_INSTALLDIR
+MSVC_<MAJOR>_*          # MSVC_14_INSTALLDIR
+MSVC_*                  # MSVC_INSTALLDIR
+
+The WINEPREFIX value corresponds to the WINEPREFIX Wine environment variable
+that allows one to use an alternative (to ~/.wine) root directory. You can
+use it, for example, to maintain multiple Visual Studio updates (e.g., 14u1,
+14u2, 14u3) which otherwise cannot coexist in a single installation.
+
+The INSTALLDIR directory can be used to alter the Visual Studio installation
+directory name (not path; the default is "Microsoft Visual Studio NN.0").
+This can be used, for example, to implement an alternative multiple updates
+strategy by installing them in the same Wine root but in different
+directories. For details on how this value is used refer to the configuration
+scripts.
 
 
 Install Wine
@@ -155,7 +188,6 @@ Add overrides for msvcr120.dll and msvcp120.dll: run winecfg, select the
 Copy and Setup Visual Studio 14
 -------------------------------
 
-Note: If using 14 Update 2, then use the *-14u2 driver scripts.
 Note: 14 Update 2 requires Wine 1.9 or later (bug #34851).
 Note: 14 Update 2 is known to work with Wine 1.9.7, 1.9.8 but not 1.9.15.
 
@@ -188,9 +220,9 @@ System32/} to .wine/drive_c/windows/{syswow64/ system32/} and add Wine
 overrides (run winecfg, select the "Libraries" tab, then enter the DLL name
 and press "Add").
 
-To discover the list of DLLs, run cl-14 to compile and link and an executable
-and then run the executable itself (see Test below): any DLL that causes an
-error needs an override.
+To discover the list of DLLs, run cl-14 to compile and link an executable and
+then run the executable itself (see Test below): any DLL that causes an error
+needs an override.
 
 For Wine 1.7.55-1.9.8 the list is:
 
@@ -212,7 +244,7 @@ The following overrides are necessary because of some unimplemented functions:
 Test
 ----
 
-cl-NN /EHsc /MD /TP hello-world.cxx
+cl-<...> /EHsc /MD /TP hello-world.cxx
 ./hello-world.exe
 
 
@@ -224,3 +256,60 @@ built with more recent Visual Studio versions) you may want to add the
 following line to your .bashrc or similar:
 
 export WINEDEBUG=fixme-all
+
+
+Hacking
+=======
+
+To add support for a new Visual Studio version follow this overall plan:
+
+
+Install Visual Studio
+---------------------
+
+Install the new version on a Windows machine keeping the setup as close to
+default as possible. Specifically, don't alter the default installation
+directory, SDK to use, etc. Normally, you would make sure all the compilers
+that you will need are installed (32, 64-bit x86, ARM, etc) and that's it.
+Note also that we use the 64-to-32-bit cross-compiler for 32-bit builds.
+
+
+Come up with Configuration(s)
+-----------------------------
+
+By examining the INCLUDE and LIB environment variables in the corresponding
+Visual Studio Command Prompts, determine which SDK/CRT versions are used,
+executable paths for the tools (use the where command), etc.
+
+Based on this information create the corresponding configuration file(s) in
+msvc-NN/ subdirectory. Use the existing configuration from the closest version
+as a guide.
+
+
+Create Driver Scripts
+---------------------
+
+Create the driver scripts corresponding to each new configuration. For example
+(replace <version> and <target>):
+
+for t in cl link lib mt rc; do \
+  cp cl-11-32 $t-<version>-<target>; done
+
+
+Copy and Setup Visual Studio on Linux
+-------------------------------------
+
+Copy the Visual Studio setup over to a Linux machine as discussed above using
+instructions from the closest version as a guide. Use the new driver scripts
+for testing.
+
+Write down new instructions or update one of the existing.
+
+
+Update Common Scripts
+---------------------
+
+In a new version of Visual Studio the tools may have new options that may need
+to be handled in the msvc-common/msvc-<tool>-common scripts. To check if any
+were added, take a diff of usage outputs (/? option) from the new version and
+the most recent that is already supported.
