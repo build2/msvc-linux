@@ -3,13 +3,11 @@
 @@ When adding support to a new version need to check if any new options
    were added to any of the tools.
 
-@@ Had to rename Windows.h to windows.h; /showIncludes seem to retain naming
-   from #include directive. Also WinBase.h, WinUser.h, WinNls.h, ... nsed?
-
 @@ Requires bash 4, realpath dirpath
-
-@@ Still need wineserver for /EP, etc. otherwise long pause.
 
 @@ What about 64-bit? cl-64 or some such?
 
 @@ There is link POSIX command. link.exe? cl-14.exe?
+
+@@ Rename to msvc-posix, msvc-cross, msvc-wine, msvc-unix. Or just
+   keep it?
