@@ -1,0 +1,35 @@
+#! /usr/bin/env bash
+
+# MSVC 15RC1 32-bit setup/configuration (note: using 64-to-32 cross-compiler).
+#
+# Should set the SDKBIN, VCBIN, VCDLL, INCLUDE, and LIB variables.
+#
+if [ -z "$MSVC_INSTALLDIR" ]; then
+  MSVC_INSTALLDIR="Microsoft Visual Studio 15.0"
+fi
+
+# SDK
+#
+SDK="C:\\Program Files (x86)\\Windows Kits\\10"
+SDKBIN="$SDK\\bin\\x86"
+SDKVER="10.0.14393.0"
+
+INCLUDE="$SDK\\include\\$SDKVER\\shared;$SDK\\include\\$SDKVER\\um;$SDK\\include\\$SDKVER\\winrt"
+LIB="$SDK\\lib\\$SDKVER\\um\\x86"
+
+# CRT
+#
+CRT="C:\\Program Files (x86)\\Windows Kits\\10"
+CRTVER="10.0.14393.0"
+
+INCLUDE="$CRT\\include\\$CRTVER\\ucrt;$INCLUDE"
+LIB="$CRT\\lib\\$CRTVER\\ucrt\\x86;$LIB"
+
+# VC
+#
+VC="C:\\Program Files (x86)\\$MSVC_INSTALLDIR\\VC\\Tools\\MSVC\\14.10.24629"
+VCBIN="$VC\\bin\\HostX64\\x86"
+VCDLL="$VC\\bin\\HostX64\\x64"
+
+INCLUDE="$VC\\include;$INCLUDE"
+LIB="$VC\\lib\\x86;$LIB"

@@ -188,8 +188,12 @@ Add overrides for msvcr120.dll and msvcp120.dll: run winecfg, select the
 Copy and Setup Visual Studio 14
 -------------------------------
 
-Note: 14 Update 2 requires Wine 1.9 or later (bug #34851).
-Note: 14 Update 2 is known to work with Wine 1.9.7, 1.9.8 but not 1.9.15.
+Note: 14 Update 2 (and presumably 3) requires Wine 1.9 or later (bug #34851).
+
+Note: 14 Update 2 (and presumably 3) is known to work with Wine 1.9.7, 1.9.8
+      but not 1.9.15.
+
+Note: SDK 8.1 is only used by 14 Update 0.
 
 $ mkdir -p ".wine/drive_c/Program Files (x86)/Microsoft Visual Studio 14.0"
 $ cp -r "/mnt/Program Files (x86)/Microsoft Visual Studio 14.0/VC" \
@@ -214,11 +218,22 @@ $ etc/lowercase-headers \
   ".wine/drive_c/Program Files (x86)/Windows Kits/8.1/Include" \
   ".wine/drive_c/Program Files (x86)/Windows Kits/10/Include"
 
-Installing via the redistributable DLLs still does not work as of Wine 1.7.55.
-Instead, we have to manually copy a bunch of DLLs from /mnt/Windows/{SysWoW64/
-System32/} to .wine/drive_c/windows/{syswow64/ system32/} and add Wine
-overrides (run winecfg, select the "Libraries" tab, then enter the DLL name
-and press "Add").
+Installing via the redistributable DLLs still does not work as of Wine 1.9.8.
+Instead, we have to manually copy a bunch of DLLs from:
+
+.wine/.../VC/redist/{x86 x64}/Microsoft.VC140.CRT/
+
+And:
+
+.wine/.../Windows Kits/10/Redist/ucrt/DLLs/{x86 x64}/
+
+To:
+
+.wine/drive_c/windows/{syswow64 system32}/
+
+And add Wine overrides (run winecfg, select the "Libraries" tab, then enter
+the DLL name and press "Add").
+------------
 
 To discover the list of DLLs, run cl-14 to compile and link an executable and
 then run the executable itself (see Test below): any DLL that causes an error
@@ -239,6 +254,71 @@ The following overrides are necessary because of some unimplemented functions:
 
   api-ms-win-crt-string-l1-1-0.dll
   api-ms-win-crt-time-l1-1-0.dll
+
+
+Copy and Setup Visual Studio 15
+-------------------------------
+
+Note: based on 15RC1.
+
+Note: 15 uses the same CRT runtime DLL version (140) as 14. If using together,
+      then it makes sense to use versions from 15 which are claimed to be
+      backwards compatible. The same probably applies to the SDK tools.
+
+Copy VC files from Windows host. Note that the source path can look
+differently, for example:
+
+.../Program Files (x86)/Microsoft Visual Studio/2017/Professional/VC.
+
+$ mkdir -p ".wine/drive_c/Program Files (x86)/Microsoft Visual Studio 15.0"
+$ cp -r "/mnt/Program Files (x86)/Microsoft Visual Studio 15.0/VC" \
+  ".wine/drive_c/Program Files (x86)/Microsoft Visual Studio 15.0/"
+
+$ mkdir -p ".wine/drive_c/Program Files (x86)/Windows Kits"
+$ cp -r "/mnt/Program Files (x86)/Windows Kits/10" \
+  ".wine/drive_c/Program Files (x86)/Windows Kits/"
+
+Add lower-case symlinks for upper-case named headers:
+
+$ etc/lowercase-headers \
+  ".wine/drive_c/Program Files (x86)/Windows Kits/10/Include"
+
+Installing via the redistributable DLLs still does not work as of Wine 1.9.8.
+Instead, we have to manually copy a bunch of DLLs from:
+
+.wine/.../VC/Redist/MSVC/14.10.24629/{x86 x64}/Microsoft.VC150.CRT/
+
+And:
+
+.wine/.../Windows Kits/10/Redist/ucrt/DLLs/{x86 x64}/
+
+To:
+
+.wine/drive_c/windows/{syswow64 system32}/
+
+And add Wine overrides (run winecfg, select the "Libraries" tab, then enter
+the DLL name and press "Add").
+
+To discover the list of DLLs, run cl-15 to compile and link an executable and
+then run the executable itself (see Test below): any DLL that causes an error
+needs an override.
+
+For Wine 1.7.55-1.9.8 the list is:
+
+  api-ms-win-crt-runtime-l1-1-0.dll
+  api-ms-win-crt-locale-l1-1-0.dll
+  api-ms-win-crt-heap-l1-1-0.dll
+  api-ms-win-crt-stdio-l1-1-0.dll
+  api-ms-win-crt-conio-l1-1-0.dll
+  ucrtbase.dll
+  vcruntime140.dll
+  msvcp140.dll
+
+The following overrides are necessary because of some unimplemented functions:
+
+  api-ms-win-crt-string-l1-1-0.dll
+  api-ms-win-crt-time-l1-1-0.dll
+  api-ms-win-core-rtlsupport-l1-1-0.dll
 
 
 Test
