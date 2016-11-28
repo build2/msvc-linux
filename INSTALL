@@ -51,8 +51,8 @@ over updates will be tedious. As a result, there are several environment
 variables that you can set (e.g., in your .bashrc) to adjust some of the
 common configuration values.
 
-Currently you can override WINEPREFIX and INSTALLDIR via the following
-environment variable hierarchy (from highest to lowest precedence):
+Currently you can override WINEPREFIX, INSTALLDIR, and SDKVERSION via the
+following environment variable hierarchy (from highest to lowest precedence):
 
 MSVC_<MAJOR><MINOR>_*   # MSVC_14U2_INSTALLDIR
 MSVC_<MAJOR>_*          # MSVC_14_INSTALLDIR
@@ -70,6 +70,10 @@ strategy by installing them in the same Wine root but in different
 directories. For details on how this value is used refer to the configuration
 scripts.
 
+The SDKVERSION value can be used to specify the Windows 10 SDK version to use.
+It should be in the 10.0.NNNNN form. If it is not specified, then the latest
+installed is used. Note that this value does not apply to Windows 8.1 and
+earlier SDKs; those versions are hardcoded in the confguration scripts.
 
 Install Wine
 ------------

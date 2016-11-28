@@ -6,12 +6,6 @@
 # linker, SDKBIN, LIB variables to be set for the specific MSVC
 # version/configuration.
 
-trap "{ exit 1; }" ERR
-set -o errtrace # Trap in functions.
-
-function info () { echo "$*" 1>&2; }
-function error () { info "$*"; exit 1; }
-
 source "$src_dir/msvc-common/msvc-common"
 
 # File descriptor where the diagnostics will be sent. Unless STDOUT is used

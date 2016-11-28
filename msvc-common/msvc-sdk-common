@@ -1,0 +1,12 @@
+#! /usr/bin/env bash
+
+# Figure out the latest Windows 10 SDK version. Fail if none is found.
+#
+function windows10_sdkversion ()
+{
+  # This path will probably always be the same (VC never asks for the SDK
+  # installation location).
+  #
+  local sdk_root="C:\\Program Files (x86)\\Windows Kits\\10"
+
+}

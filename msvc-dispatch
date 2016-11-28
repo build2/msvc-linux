@@ -31,7 +31,7 @@ if [ -z "$tool" -o -z "$major" -o -z "$target" ]; then
   error "invalid top-level script name"
 fi
 
-# Calculate MSVC_WINEPREFIX and MSVC_INSTALLDIR.
+# Calculate MSVC_{WINEPREFIX,INSTALLDIR,SDKVERSION}.
 #
 # We have the following environment variable name hierarchy:
 #
@@ -61,6 +61,7 @@ function lookup_value() # <name>
 
 MSVC_WINEPREFIX="$(lookup_value "WINEPREFIX")"
 MSVC_INSTALLDIR="$(lookup_value "INSTALLDIR")"
+MSVC_SDKVERSION="$(lookup_value "SDKVERSION")"
 
 # Load the configuration.
 #

@@ -8,12 +8,6 @@
 # It's not clear/documented why we need LIB or what the /LIBPATH option is
 # for. Perhaps for link-time code generation (/LTCG).
 
-trap "{ exit 1; }" ERR
-set -o errtrace # Trap in functions.
-
-function info () { echo "$*" 1>&2; }
-function error () { info "$*"; exit 1; }
-
 source "$src_dir/msvc-common/msvc-common"
 
 # Translate absolute paths from POSIX to Windows. Use bash array to store
