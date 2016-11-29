@@ -9,4 +9,40 @@ function windows10_sdkversion ()
   #
   local sdk_root="C:\\Program Files (x86)\\Windows Kits\\10"
 
+  # Iterate through $sdk_root/Include subdirectories using the "10.0.NNNNN.0"
+  # pattern and choose the (lexicographically) greatest one. Strip the
+  # trailing .0 from the selected name and return it as the SDK version.
+  #
+  # Note that redirecting winepath's stderr to /dev/null is essential to
+  # workaround a wineserver bug. If the script's strderr is redirected to
+  # stdout, it gets inherited by the shell running winepath and the script
+  # caller that reads from the child stdout can hang waiting for EOF until
+  # wineserver terminates. For more details on this bug read the related
+  # comments in msvc-filter.cxx.
+  #
+  local sdk_include
+  sdk_include="$(winepath -u "$sdk_root/Include" 2>/dev/null)"
+
+  local mxv=
+  for d in "$sdk_include/10.0."[0-9][0-9][0-9][0-9][0-9]".0"; do
+    #
+    # Consider sub-directories only. Note that we can get a false positive if
+    # there is no entry that matches the "10.0.NNNNN.0" pattern but the
+    # "10.0.[0-9][0-9][0-9][0-9][0-9].0" sub-directory is present. We handle
+    # this corner case later by checking the version length.
+    #
+    if [ -d "$d" ]; then
+      local v
+      v="$(basename "$d")"
+      if [[ "$mxv" < "$v" ]]; then
+        mxv="$v"
+      fi
+    fi
+  done
+
+  if [ ${#mxv} -ne 12 ]; then
+    error "unable to find Windows 10 SDK in $sdk_root"
+  fi
+
+  echo "${mxv:0:10}"
 }

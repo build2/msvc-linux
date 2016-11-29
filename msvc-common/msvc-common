@@ -42,12 +42,6 @@ function msvc_exec () # <diag> <exe> <arg>...
   #
   export WINEDEBUG=fixme-all
 
-  # Set an alternative .wine directory if requested.
-  #
-  if [ -n "$MSVC_WINEPREFIX" ]; then
-    export WINEPREFIX="$MSVC_WINEPREFIX"
-  fi
-
   # Filter diagnostics output replacing absolute Windows paths with their
   # POSIX mapping. If <diag> is 1 then both stdout and stderr output are read
   # and filtered.

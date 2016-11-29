@@ -8,11 +8,19 @@ if [ -z "$MSVC_INSTALLDIR" ]; then
   MSVC_INSTALLDIR="Microsoft Visual Studio 14.0"
 fi
 
+if [ -z "$MSVC_SDKVERSION" ]; then
+  source "$src_dir/msvc-common/msvc-sdk-common"
+  MSVC_SDKVERSION="$(windows10_sdkversion)"
+fi
+
 # SDK
 #
 SDK="C:\\Program Files (x86)\\Windows Kits\\10"
 SDKBIN="$SDK\\bin\\x86"
-SDKVER="10.0.14393.0"
+
+# Originally "10.0.14393" (if upgrade 14u2) or "10.0.10240" (if clean install).
+#
+SDKVER="$MSVC_SDKVERSION.0"
 
 INCLUDE="$SDK\\include\\$SDKVER\\shared;$SDK\\include\\$SDKVER\\um;$SDK\\include\\$SDKVER\\winrt"
 LIB="$SDK\\lib\\$SDKVER\\um\\x86"
@@ -20,7 +28,10 @@ LIB="$SDK\\lib\\$SDKVER\\um\\x86"
 # CRT
 #
 CRT="C:\\Program Files (x86)\\Windows Kits\\10"
-CRTVER="10.0.14393.0"
+
+# Originally "10.0.14393" (if upgrade 14u2) or "10.0.10240" (if clean install).
+#
+CRTVER="$MSVC_SDKVERSION.0"
 
 INCLUDE="$CRT\\include\\$CRTVER\\ucrt;$INCLUDE"
 LIB="$CRT\\lib\\$CRTVER\\ucrt\\x86;$LIB"

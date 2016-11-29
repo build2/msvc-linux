@@ -63,6 +63,13 @@ MSVC_WINEPREFIX="$(lookup_value "WINEPREFIX")"
 MSVC_INSTALLDIR="$(lookup_value "INSTALLDIR")"
 MSVC_SDKVERSION="$(lookup_value "SDKVERSION")"
 
+# Set an alternative .wine directory if requested. WINEPREFIX environment
+# variable is recognized by wine and winepath programs.
+#
+if [ -n "$MSVC_WINEPREFIX" ]; then
+  export WINEPREFIX="$MSVC_WINEPREFIX"
+fi
+
 # Load the configuration.
 #
 source "$src_dir/msvc-$major/msvc-$major$minor-$target"

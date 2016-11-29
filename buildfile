@@ -19,7 +19,8 @@ s = cl-11-32     lib-11-32     link-11-32     mt-11-32     rc-11-32     \
     msvc-dispatch                                                       \
                                                                         \
     msvc-common/{msvc-cl-common msvc-common msvc-lib-common             \
-                 msvc-link-common msvc-mt-common msvc-rc-common}        \
+                 msvc-link-common msvc-mt-common msvc-rc-common         \
+                 msvc-sdk-common}                                       \
                                                                         \
     msvc-11/{msvc-11-32}                                                \
     msvc-12/{msvc-12-32}                                                \
