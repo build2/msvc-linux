@@ -175,7 +175,7 @@ export LIB
 
 # link.exe may need to run mt.exe which is in the SDK.
 #
-export WINEPATH="$VCBIN;$VCDLL;$SDKBIN"
+export WINEPATH="$VCBIN;$VCDLL;$SDKBIN;$WINEPATH"
 
 # link.exe always sends diagnostics to stdout.
 #

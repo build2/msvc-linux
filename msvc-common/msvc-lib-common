@@ -87,7 +87,7 @@ export LIB
 
 # link.exe may need to run other tools (/LTCG).
 #
-export WINEPATH="$VCBIN;$VCDLL;$SDKBIN"
+export WINEPATH="$VCBIN;$VCDLL;$SDKBIN;$WINEPATH"
 
 # lib.exe always sends diagnostics to stdout.
 #

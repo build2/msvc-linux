@@ -143,6 +143,6 @@ export LIB
 
 # The linker may need to run mt.exe which is in the SDK.
 #
-export WINEPATH="$VCBIN;$VCDLL;$SDKBIN"
+export WINEPATH="$VCBIN;$VCDLL;$SDKBIN;$WINEPATH"
 
 msvc_exec $diag "$VCBIN\\cl.exe" "${args[@]}"
