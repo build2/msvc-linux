@@ -1,5 +1,9 @@
 #! /usr/bin/env bash
 
+# file      : msvc-common/msvc-cl-common
+# copyright : Copyright (c) 2014-2017 Code Synthesis Ltd
+# license   : MIT; see accompanying LICENSE file
+
 # Note: shouldn't be executed directly, src_dir must be set.
 
 # Common cl.exe driver that expects the VCBIN, INCLUDE, and, if running as a
