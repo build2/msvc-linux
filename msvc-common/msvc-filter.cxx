@@ -16,7 +16,7 @@
 #include <unordered_map>
 
 #include <butl/path>     // path::traits::realize()
-#include <butl/utility>  // alpha()
+#include <butl/utility>  // alpha(), throw_generic_error()
 #include <butl/process>
 #include <butl/fdstream>
 
@@ -136,7 +136,7 @@ filter (const char* s, size_t n, ostream& os)
       // non-existent path. Anyway will consider it fatal.
       //
       if (!pr.wait ())
-        throw system_error (ECHILD, system_category ());
+        throw_generic_error (ECHILD);
 
       try
       {
@@ -290,7 +290,7 @@ try
       if (errno == EINTR)
         continue;
 
-      throw system_error (errno, system_category ());
+      throw_generic_error (errno);
     }
 
     // Timeout occured. Apply wineserver bug workaround if required.
