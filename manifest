@@ -1,6 +1,6 @@
 : 1
 name: msvc-linux # @@ Shouldn't we change it to some more generic name?
-version: 0.1.0-a1
+version: 0.1.0-b.0.z
 summary: MS Visual C++ driver scripts
 license: MIT
 tags: msvc, vc, c++, script
@@ -10,6 +10,6 @@ url: https://build2.org # @@ Use the proper url and email.
 email: users@build2.org
 build-email: builds@build2.org
 requires: c++14
-depends: * build2 >= 0.4.0
-depends: * bpkg >= 0.4.0
-depends: libbutl == 0.5.0-a1
+depends: * build2 >= 0.5.0-
+depends: * bpkg >= 0.5.0-
+depends: libbutl == [0.5.0-b.0.1 0.5.0-b.1)

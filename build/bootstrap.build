@@ -4,16 +4,7 @@
 
 project = msvc-linux
 
-using build@0.4.0
-
-version = 0.1.0-a1
-revision = 0
-
-dist.package = $project-$version
-
-if ($revision != 0)
-  dist.package += +$revision
-
+using version
 using config
 using dist
 using install
