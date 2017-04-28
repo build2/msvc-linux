@@ -3,3 +3,4 @@
 msvc-filter
 *.d
 *.o
+version-impl
