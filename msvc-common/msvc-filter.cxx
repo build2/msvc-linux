@@ -20,6 +20,8 @@
 #include <butl/process>
 #include <butl/fdstream>
 
+#include <msvc-common/version-impl>
+
 using namespace std;
 using namespace butl;
 
