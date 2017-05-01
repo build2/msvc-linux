@@ -1,4 +1,4 @@
-// file      : msvc-common/version-impl.in -*- C++ -*-
+// file      : msvc-common/version.hxx.in -*- C++ -*-
 // copyright : Copyright (c) 2014-2017 Code Synthesis Ltd
 // license   : MIT; see accompanying LICENSE file
 
@@ -37,7 +37,7 @@
 #define MSVC_FILTER_SNAPSHOT      $msvc-linux.version.snapshot_sn$ULL
 #define MSVC_FILTER_SNAPSHOT_ID   "$msvc-linux.version.snapshot_id$"
 
-#include <butl/version>
+#include <libbutl/version.hxx>
 
 $libbutl.check(LIBBUTL_VERSION, LIBBUTL_SNAPSHOT)$
 

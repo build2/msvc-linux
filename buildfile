@@ -48,10 +48,10 @@ msvc-common/:
 {
   import libs = libbutl%lib{butl}
 
-  exe{msvc-filter}: cxx{msvc-filter} hxx{version-impl} $libs
+  exe{msvc-filter}: cxx{msvc-filter} hxx{version} $libs
 
-  hxx{version-impl}: in{version-impl} $src_root/file{manifest}
-  hxx{version-impl}: dist = true
+  hxx{version}: in{version} $src_root/file{manifest}
+  hxx{version}: dist = true
 }
 
 # Don't install INSTALL file.
