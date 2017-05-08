@@ -1,10 +1,10 @@
 #! /usr/bin/env bash
 
-# file      : msvc-15/msvc-15rc1-64
+# file      : msvc-15/msvc-15u0-64
 # copyright : Copyright (c) 2014-2017 Code Synthesis Ltd
 # license   : MIT; see accompanying LICENSE file
 
-# MSVC 15RC1 64-bit setup/configuration.
+# MSVC 64-bit setup/configuration.
 #
 # Should set the SDKBIN, VCBIN, VCDLL, INCLUDE, and LIB variables.
 #
@@ -21,7 +21,7 @@ fi
 #
 SDK="C:\\Program Files (x86)\\Windows Kits\\10"
 SDKBIN="$SDK\\bin\\x64"
-SDKVER="$MSVC_SDKVERSION.0" # Originally "10.0.14393".
+SDKVER="$MSVC_SDKVERSION.0"
 
 INCLUDE="$SDK\\include\\$SDKVER\\shared;$SDK\\include\\$SDKVER\\um;$SDK\\include\\$SDKVER\\winrt"
 LIB="$SDK\\lib\\$SDKVER\\um\\x64"
@@ -29,14 +29,14 @@ LIB="$SDK\\lib\\$SDKVER\\um\\x64"
 # CRT
 #
 CRT="C:\\Program Files (x86)\\Windows Kits\\10"
-CRTVER="$MSVC_SDKVERSION.0" # Originally "10.0.14393".
+CRTVER="$MSVC_SDKVERSION.0"
 
 INCLUDE="$CRT\\include\\$CRTVER\\ucrt;$INCLUDE"
 LIB="$CRT\\lib\\$CRTVER\\ucrt\\x64;$LIB"
 
 # VC
 #
-VC="C:\\Program Files (x86)\\$MSVC_INSTALLDIR\\VC\\Tools\\MSVC\\14.10.24629"
+VC="C:\\Program Files (x86)\\$MSVC_INSTALLDIR\\VC\\Tools\\MSVC\\14.10.25017"
 VCBIN="$VC\\bin\\HostX64\\x64"
 VCDLL="$VC\\bin\\HostX64\\x64"
 

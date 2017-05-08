@@ -18,7 +18,7 @@ form:
 Where:
 
 <tool>     is one of 'cl' 'link' 'lib' 'mt' 'rc'
-<version>  is the Visual Studio version, for example, 11, 12, 14u2, 15rc1
+<version>  is the Visual Studio version, for example, 11, 12, 14u3, 15rc1
 <target>   is the compiler target, for example, 32 (x86), 64 (x86_64).
 
 There are also the "configuration" scripts, msvc-NN/msvc-<version>-<target>,
@@ -263,8 +263,6 @@ The following overrides are necessary because of some unimplemented functions:
 Copy and Setup Visual Studio 15
 -------------------------------
 
-Note: based on 15RC1.
-
 Note: 15 uses the same CRT runtime DLL version (140) as 14. If using together,
       then it makes sense to use versions from 15 which are claimed to be
       backwards compatible. The same probably applies to the SDK tools.
@@ -290,7 +288,7 @@ $ etc/lowercase-headers \
 Installing via the redistributable DLLs still does not work as of Wine 1.9.8.
 Instead, we have to manually copy a bunch of DLLs from:
 
-.wine/.../VC/Redist/MSVC/14.10.24629/{x86 x64}/Microsoft.VC150.CRT/
+.wine/.../VC/Redist/MSVC/14.10.NNNNN/{x86 x64}/Microsoft.VC150.CRT/
 
 And:
 

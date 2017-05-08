@@ -23,13 +23,9 @@ s = cl-11-32     lib-11-32     link-11-32     mt-11-32     rc-11-32     \
     cl-14u3-64   lib-14u3-64   link-14u3-64   mt-14u3-64   rc-14u3-64   \
     msvc-14/{msvc-14u3-32 msvc-14u3-64}                                 \
                                                                         \
-    cl-15rc1-32  lib-15rc1-32  link-15rc1-32  mt-15rc1-32  rc-15rc1-32  \
-    cl-15rc1-64  lib-15rc1-64  link-15rc1-64  mt-15rc1-64  rc-15rc1-64  \
-    msvc-15/{msvc-15rc1-32 msvc-15rc1-64}                               \
-                                                                        \
-    cl-15rc2-32  lib-15rc2-32  link-15rc2-32  mt-15rc2-32  rc-15rc2-32  \
-    cl-15rc2-64  lib-15rc2-64  link-15rc2-64  mt-15rc2-64  rc-15rc2-64  \
-    msvc-15/{msvc-15rc2-32 msvc-15rc2-64}                               \
+    cl-15u0-32   lib-15u0-32   link-15u0-32   mt-15u0-32   rc-15u0-32   \
+    cl-15u0-64   lib-15u0-64   link-15u0-64   mt-15u0-64   rc-15u0-64   \
+    msvc-15/{msvc-15u0-32 msvc-15u0-64}                                 \
                                                                         \
     msvc-dispatch                                                       \
                                                                         \
