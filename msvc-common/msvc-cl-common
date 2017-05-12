@@ -143,6 +143,7 @@ while [ $# -gt 0 ]; do
 done
 
 export INCLUDE
+export IFCPATH
 export LIB
 
 # The linker may need to run mt.exe which is in the SDK.

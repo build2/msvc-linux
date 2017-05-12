@@ -41,4 +41,5 @@ VCBIN="$VC\\bin\\HostX64\\x64"
 VCDLL="$VC\\bin\\HostX64\\x64"
 
 INCLUDE="$VC\\include;$INCLUDE"
+IFCPATH="$VC\\ifc\\x64"
 LIB="$VC\\lib\\x64;$LIB"
