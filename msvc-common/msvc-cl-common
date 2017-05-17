@@ -13,8 +13,8 @@
 source "$src_dir/msvc-common/msvc-common"
 
 # File descriptor where the diagnostics will be sent. Unless STDOUT is used
-# for something else (e.g., /E), cl.exe sends the diagnostics there.
-# Otherwise it goes to STDERR.
+# for something else (e.g., /E, /EP), cl.exe sends the diagnostics there.
+# Otherwise it goes to STDERR. Plus /P behaves like /E for some reason.
 #
 diag=1
 
@@ -118,9 +118,10 @@ while [ $# -gt 0 ]; do
       shift
       ;;
 
-    # Detect /E and /EP -- they change where the diagnostics is sent.
+    # Detect /E, /P, and /EP -- they change where the diagnostics is sent.
     #
     [/-]E | \
+    [/-]P | \
     [/-]EP)
       diag=2
       args=("${args[@]}" "$1")
