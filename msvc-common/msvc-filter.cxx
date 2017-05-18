@@ -323,7 +323,7 @@ try
 
     // Proxy the data if requested.
     //
-    if (FD_ISSET (isp.fd (), &rd))
+    if (isp.is_open () && FD_ISSET (isp.fd (), &rd))
     {
       for (;;)
       {
@@ -349,7 +349,7 @@ try
 
     // Read & filter.
     //
-    if (FD_ISSET (isf.fd (), &rd))
+    if (isf.is_open () && FD_ISSET (isf.fd (), &rd))
     {
       for (;;)
       {
