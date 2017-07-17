@@ -6,10 +6,8 @@ define sh: file
 sh{*}: extension =
 sh{*}: install = bin/
 
-# @@ Change to 'sh{cl-* lib-* link-* mt-* rc-*}' when supported.
-#
 ./: msvc-common/exe{msvc-filter}                            \
-    sh{cl-* +lib-* +link-* +mt-* +rc-*}                     \
+    sh{cl-* lib-* link-* mt-* rc-*}                         \
     sh{msvc-** -msvc-common/msvc-filter*}                   \
     doc{INSTALL LICENSE NEWS README version} file{manifest}
 
