@@ -237,7 +237,6 @@ To:
 
 And add Wine overrides (run winecfg, select the "Libraries" tab, then enter
 the DLL name and press "Add").
-------------
 
 To discover the list of DLLs, run cl-14 to compile and link an executable and
 then run the executable itself (see Test below): any DLL that causes an error
@@ -322,6 +321,9 @@ The following overrides are necessary because of some unimplemented functions:
   api-ms-win-crt-time-l1-1-0.dll
   api-ms-win-core-rtlsupport-l1-1-0.dll
 
+Note also that if you plan to run tests built against the debug runtime, then
+also copy ucrtbased.dll, vcruntime140d.dll, and msvcp140d.dll from Windows
+Kits/10/bin/.../ucrt/ and VC/Redist/.../debug_noredist/.
 
 Test
 ----

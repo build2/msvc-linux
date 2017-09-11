@@ -1,0 +1,45 @@
+#! /usr/bin/env bash
+
+# file      : msvc-15/msvc-15u3-64
+# copyright : Copyright (c) 2014-2017 Code Synthesis Ltd
+# license   : MIT; see accompanying LICENSE file
+
+# MSVC 64-bit setup/configuration.
+#
+# Should set the SDKBIN, VCBIN, VCDLL, INCLUDE, and LIB variables.
+#
+if [ -z "$MSVC_INSTALLDIR" ]; then
+  MSVC_INSTALLDIR="Microsoft Visual Studio 15.0"
+fi
+
+if [ -z "$MSVC_SDKVERSION" ]; then
+  source "$src_dir/msvc-common/msvc-sdk-common"
+  MSVC_SDKVERSION="$(windows10_sdkversion)"
+fi
+
+# SDK
+#
+SDK="C:\\Program Files (x86)\\Windows Kits\\10"
+SDKBIN="$SDK\\bin\\x64"
+SDKVER="$MSVC_SDKVERSION.0"
+
+INCLUDE="$SDK\\include\\$SDKVER\\shared;$SDK\\include\\$SDKVER\\um;$SDK\\include\\$SDKVER\\winrt"
+LIB="$SDK\\lib\\$SDKVER\\um\\x64"
+
+# CRT
+#
+CRT="C:\\Program Files (x86)\\Windows Kits\\10"
+CRTVER="$MSVC_SDKVERSION.0"
+
+INCLUDE="$CRT\\include\\$CRTVER\\ucrt;$INCLUDE"
+LIB="$CRT\\lib\\$CRTVER\\ucrt\\x64;$LIB"
+
+# VC
+#
+VC="C:\\Program Files (x86)\\$MSVC_INSTALLDIR\\VC\\Tools\\MSVC\\14.11.25503"
+VCBIN="$VC\\bin\\HostX64\\x64"
+VCDLL="$VC\\bin\\HostX64\\x64"
+
+INCLUDE="$VC\\include;$INCLUDE"
+IFCPATH="$VC\\ifc\\x64"
+LIB="$VC\\lib\\x64;$LIB"

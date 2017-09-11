@@ -36,13 +36,28 @@ diag=1
 #
 args=()
 
+# Whether to export IFCPATH. We suppress it if /module:stdIfcDir is specified
+# since IFCPATH path (misguidedly) takes precedence.
+#
+ifc=true
+
 while [ $# -gt 0 ]; do
   case $1 in
 
     # /I <dir>, /AI <dir>
+    # /module:output <file>, /module:reference <file>
+    # /module:search <dir>, /module:stdIfcDir <dir>
     #
-    [/-]I | \
-    [/-]AI)
+    [/-]I                | \
+    [/-]AI               | \
+    [/-]module:output    | \
+    [/-]module:reference | \
+    [/-]module:search    | \
+    [/-]module:stdIfcDir)
+      if [ "$1" = "/module:stdIfcDir" ]; then
+	ifc=
+      fi
+
       args=("${args[@]}" "$1")
       shift
       args=("${args[@]}" "$(translate $1)")
@@ -144,8 +159,11 @@ while [ $# -gt 0 ]; do
 done
 
 export INCLUDE
-export IFCPATH
 export LIB
+
+if [ "$ifc" = "true" ]; then
+  export IFCPATH
+fi
 
 # The linker may need to run mt.exe which is in the SDK.
 #
