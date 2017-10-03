@@ -15,10 +15,10 @@
 #include <system_error>
 #include <unordered_map>
 
-#include <libbutl/path.hxx>     // path::traits::realize()
-#include <libbutl/utility.hxx>  // alpha(), throw_generic_error()
-#include <libbutl/process.hxx>
-#include <libbutl/fdstream.hxx>
+#include <libbutl/path.mxx>     // path::traits::realize()
+#include <libbutl/utility.mxx>  // alpha(), throw_generic_error()
+#include <libbutl/process.mxx>
+#include <libbutl/fdstream.mxx>
 
 #include <msvc-common/version.hxx>
 
