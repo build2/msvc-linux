@@ -328,6 +328,7 @@ The following overrides are necessary because of some unimplemented functions:
 
   api-ms-win-crt-string-l1-1-0.dll
   api-ms-win-crt-time-l1-1-0.dll
+  api-ms-win-crt-convert-l1-1-0.dll
   api-ms-win-core-rtlsupport-l1-1-0.dll
 
 Note also that if you plan to run tests built against the debug runtime, then
