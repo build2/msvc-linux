@@ -19,7 +19,7 @@ doc{version}: file{manifest}
 doc{version}: dist  = true
 doc{version}: clean = ($src_root != $out_root)
 
-msvc-common/:
+msvc-common/
 {
   import libs = libbutl%lib{butl}
 
