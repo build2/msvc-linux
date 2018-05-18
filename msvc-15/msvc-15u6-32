@@ -36,7 +36,7 @@ LIB="$CRT\\lib\\$CRTVER\\ucrt\\x86;$LIB"
 
 # VC
 #
-VC="C:\\Program Files (x86)\\$MSVC_INSTALLDIR\\VC\\Tools\\MSVC\\14.13.26126
+VC="C:\\Program Files (x86)\\$MSVC_INSTALLDIR\\VC\\Tools\\MSVC\\14.13.26126"
 VCBIN="$VC\\bin\\Hostx64\\x86"
 VCDLL="$VC\\bin\\Hostx64\\x64"
 
