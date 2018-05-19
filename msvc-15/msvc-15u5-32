@@ -1,7 +1,7 @@
 #! /usr/bin/env bash
 
 # file      : msvc-15/msvc-15u5-32
-# copyright : Copyright (c) 2014-2017 Code Synthesis Ltd
+# copyright : Copyright (c) 2014-2018 Code Synthesis Ltd
 # license   : MIT; see accompanying LICENSE file
 
 # MSVC 15 32-bit setup/configuration (note: using 64-to-32 cross-compiler).
