@@ -2,7 +2,7 @@
 # copyright : Copyright (c) 2014-2018 Code Synthesis Ltd
 # license   : MIT; see accompanying LICENSE file
 
-cxx.std = 14
+cxx.std = latest
 
 using cxx
 
@@ -11,4 +11,4 @@ ixx{*}: extension = ixx
 txx{*}: extension = txx
 cxx{*}: extension = cxx
 
-cxx.poptions =+ "-I$src_root"
+cxx.poptions =+ "-I$out_root" "-I$src_root"

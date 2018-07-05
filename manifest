@@ -1,7 +1,7 @@
 : 1
 name: msvc-linux
 version: 0.8.0-a.0.z
-summary: MS Visual C++ driver scripts
+summary: MS Visual C++ as cross-compiler driver scripts
 license: MIT
 tags: msvc, vc, c++, script
 description-file: README
