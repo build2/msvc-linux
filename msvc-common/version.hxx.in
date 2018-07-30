@@ -24,18 +24,18 @@
 // 3.0.0-b.2    0029999995020
 // 2.2.0-a.1.z  0020019990011
 //
-#define MSVC_FILTER_VERSION       $msvc-linux.version.project_number$ULL
-#define MSVC_FILTER_VERSION_STR   "$msvc-linux.version.project$"
-#define MSVC_FILTER_VERSION_ID    "$msvc-linux.version.project_id$"
+#define MSVC_FILTER_VERSION       $msvc_linux.version.project_number$ULL
+#define MSVC_FILTER_VERSION_STR   "$msvc_linux.version.project$"
+#define MSVC_FILTER_VERSION_ID    "$msvc_linux.version.project_id$"
 
-#define MSVC_FILTER_VERSION_MAJOR $msvc-linux.version.major$
-#define MSVC_FILTER_VERSION_MINOR $msvc-linux.version.minor$
-#define MSVC_FILTER_VERSION_PATCH $msvc-linux.version.patch$
+#define MSVC_FILTER_VERSION_MAJOR $msvc_linux.version.major$
+#define MSVC_FILTER_VERSION_MINOR $msvc_linux.version.minor$
+#define MSVC_FILTER_VERSION_PATCH $msvc_linux.version.patch$
 
-#define MSVC_FILTER_PRE_RELEASE   $msvc-linux.version.pre_release$
+#define MSVC_FILTER_PRE_RELEASE   $msvc_linux.version.pre_release$
 
-#define MSVC_FILTER_SNAPSHOT      $msvc-linux.version.snapshot_sn$ULL
-#define MSVC_FILTER_SNAPSHOT_ID   "$msvc-linux.version.snapshot_id$"
+#define MSVC_FILTER_SNAPSHOT      $msvc_linux.version.snapshot_sn$ULL
+#define MSVC_FILTER_SNAPSHOT_ID   "$msvc_linux.version.snapshot_id$"
 
 #include <libbutl/version.hxx>
 
