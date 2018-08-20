@@ -18,6 +18,7 @@
 #include <libbutl/path.mxx>     // path::traits::realize()
 #include <libbutl/utility.mxx>  // alpha(), throw_generic_error()
 #include <libbutl/process.mxx>
+#include <libbutl/optional.mxx>
 #include <libbutl/fdstream.mxx>
 
 #include <msvc-common/version.hxx>
@@ -297,10 +298,10 @@ try
 
     // Timeout occured. Apply wineserver bug workaround if required.
     //
-    bool status;
-    if (r == 0 && pr.try_wait (status))
+    butl::optional<bool> status;
+    if (r == 0 && (status = pr.try_wait ()))
     {
-      if (!status)
+      if (!*status)
         // Handle the child failure outside the loop.
         //
         break;
