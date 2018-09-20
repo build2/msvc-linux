@@ -16,7 +16,7 @@
 #include <unordered_map>
 
 #include <libbutl/path.mxx>     // path::traits::realize()
-#include <libbutl/utility.mxx>  // alpha(), throw_generic_error()
+#include <libbutl/utility.mxx>  // alpha(), throw_*_error()
 #include <libbutl/process.mxx>
 #include <libbutl/optional.mxx>
 #include <libbutl/fdstream.mxx>
@@ -293,7 +293,7 @@ try
       if (errno == EINTR)
         continue;
 
-      throw_generic_error (errno);
+      throw_system_error (errno);
     }
 
     // Timeout occured. Apply wineserver bug workaround if required.
