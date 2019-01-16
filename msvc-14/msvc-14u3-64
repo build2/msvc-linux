@@ -1,7 +1,7 @@
 #! /usr/bin/env bash
 
 # file      : msvc-14/msvc-14u3-64
-# copyright : Copyright (c) 2014-2018 Code Synthesis Ltd
+# copyright : Copyright (c) 2014-2019 Code Synthesis Ltd
 # license   : MIT; see accompanying LICENSE file
 
 # MSVC 14U3 64-bit setup/configuration.

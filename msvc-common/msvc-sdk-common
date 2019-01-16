@@ -1,7 +1,7 @@
 #! /usr/bin/env bash
 
 # file      : msvc-common/msvc-sdk-common
-# copyright : Copyright (c) 2014-2018 Code Synthesis Ltd
+# copyright : Copyright (c) 2014-2019 Code Synthesis Ltd
 # license   : MIT; see accompanying LICENSE file
 
 # Figure out the latest Windows 10 SDK version. Fail if none is found.
