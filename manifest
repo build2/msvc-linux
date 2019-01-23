@@ -7,7 +7,7 @@ license: MIT
 tags: msvc, vc, c++, script
 description-file: README
 changes-file: NEWS
-url: https://build2.org # @@ Use the proper url and email.
+url: https://build2.org
 doc-url: https://build2.org/doc.xhtml
 src-url: https://git.build2.org/cgit/etc/msvc-linux/tree/
 email: users@build2.org
