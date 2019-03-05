@@ -3,8 +3,12 @@
 # license   : MIT; see accompanying LICENSE file
 
 define sh: file
-sh{*}: extension =
-sh{*}: install = bin/
+
+sh{*}:
+{
+  extension =
+  install = bin/
+}
 
 ./: msvc-common/exe{msvc-filter}              \
     sh{cl-* lib-* link-* mt-* rc-*}           \
