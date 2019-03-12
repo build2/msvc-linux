@@ -1,6 +1,6 @@
 #! /usr/bin/env bash
 
-# file      : msvc-14/msvc-14u3-32
+# file      : msvc-14/msvc-14.3-32
 # copyright : Copyright (c) 2014-2019 Code Synthesis Ltd
 # license   : MIT; see accompanying LICENSE file
 
@@ -22,7 +22,7 @@ fi
 SDK="C:\\Program Files (x86)\\Windows Kits\\10"
 SDKBIN="$SDK\\bin\\x86"
 
-# Originally "10.0.14393" (if upgrade 14u2) or "10.0.10240" (if clean install).
+# Originally "10.0.14393" (if upgrade 14.2) or "10.0.10240" (if clean install).
 #
 SDKVER="$MSVC_SDKVERSION.0"
 
@@ -33,7 +33,7 @@ LIB="$SDK\\lib\\$SDKVER\\um\\x86"
 #
 CRT="C:\\Program Files (x86)\\Windows Kits\\10"
 
-# Originally "10.0.14393" (if upgrade 14u2) or "10.0.10240" (if clean install).
+# Originally "10.0.14393" (if upgrade 14.2) or "10.0.10240" (if clean install).
 #
 CRTVER="$MSVC_SDKVERSION.0"
 

@@ -1,15 +1,15 @@
 #! /usr/bin/env bash
 
-# file      : msvc-15/msvc-15u0-32
+# file      : msvc-16/msvc-16.0-32
 # copyright : Copyright (c) 2014-2019 Code Synthesis Ltd
 # license   : MIT; see accompanying LICENSE file
 
-# MSVC 15 32-bit setup/configuration (note: using 64-to-32 cross-compiler).
+# MSVC 16 32-bit setup/configuration (note: using 64-to-32 cross-compiler).
 #
 # Should set the SDKBIN, VCBIN, VCDLL, INCLUDE, and LIB variables.
 #
 if [ -z "$MSVC_INSTALLDIR" ]; then
-  MSVC_INSTALLDIR="Microsoft Visual Studio 15.0"
+  MSVC_INSTALLDIR="Microsoft Visual Studio 16.0"
 fi
 
 if [ -z "$MSVC_SDKVERSION" ]; then
@@ -20,10 +20,10 @@ fi
 # SDK
 #
 SDK="C:\\Program Files (x86)\\Windows Kits\\10"
-SDKBIN="$SDK\\bin\\x86"
 SDKVER="$MSVC_SDKVERSION.0"
+SDKBIN="$SDK\\bin\\$SDKVER\\x86"
 
-INCLUDE="$SDK\\include\\$SDKVER\\shared;$SDK\\include\\$SDKVER\\um;$SDK\\include\\$SDKVER\\winrt"
+INCLUDE="$SDK\\include\\$SDKVER\\shared;$SDK\\include\\$SDKVER\\um;$SDK\\include\\$SDKVER\\winrt;$SDK\\include\\$SDKVER\\cppwinrt"
 LIB="$SDK\\lib\\$SDKVER\\um\\x86"
 
 # CRT
@@ -36,7 +36,16 @@ LIB="$CRT\\lib\\$CRTVER\\ucrt\\x86;$LIB"
 
 # VC
 #
-VC="C:\\Program Files (x86)\\$MSVC_INSTALLDIR\\VC\\Tools\\MSVC\\14.10.25017"
+VC="C:\\Program Files (x86)\\$MSVC_INSTALLDIR\\VC\\Tools\\MSVC\\14.20.27404"
+
+# Note that running cross-linker may end up with the following error:
+#
+# LINK : fatal error LNK1158: cannot run 'cvtres.exe'
+#
+# The native linker doesn't fail but may run out of memory in some cases. One
+# workaround for the above error is to symlinking HostX64/x64/cvtres.exe into
+# HostX64/x86/. However, let's postpone it until really necessary.
+#
 VCBIN="$VC\\bin\\HostX64\\x86"
 VCDLL="$VC\\bin\\HostX64\\x64"
 

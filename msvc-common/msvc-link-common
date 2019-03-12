@@ -104,7 +104,8 @@ while [ $# -gt 0 ]; do
       ;;
 
     [/-]DEFAULTLIB:* | \
-    [/-]PDBALTPATH:*)
+    [/-]PDBALTPATH:* | \
+    [/-]SOURCELINK:*)
       args=("${args[@]}" "$(split_translate 12 $1)")
       shift
       ;;
@@ -166,9 +167,9 @@ while [ $# -gt 0 ]; do
       # If contains at least two slashes, treat it as a path.
       #
       if [[ "$1" == /*/* ]]; then
-	args=("${args[@]}" "$(translate $1)")
+        args=("${args[@]}" "$(translate $1)")
       else
-	args=("${args[@]}" "$1")
+        args=("${args[@]}" "$1")
       fi
       shift
       ;;

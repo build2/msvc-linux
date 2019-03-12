@@ -18,7 +18,7 @@ form:
 Where:
 
 <tool>     is one of 'cl' 'link' 'lib' 'mt' 'rc'
-<version>  is the Visual Studio version, for example, 11, 12, 14u3, 15rc1
+<version>  is the Visual Studio version, for example, 11, 12, 14.3, 15.0
 <target>   is the compiler target, for example, 32 (x86), 64 (x86_64).
 
 There are also the "configuration" scripts, msvc-NN/msvc-<version>-<target>,
@@ -44,7 +44,7 @@ you can simply add symlinks to the scripts there. This way you can also choose
 shorter tool names, for example:
 
 for t in cl link lib mt rc; do \
-  ln -s .../msvc-linux/$t-14u2-64 ~/bin/$t-14; done
+  ln -s .../msvc-linux/$t-14.2-64 ~/bin/$t-14; done
 
 While you can modify the configuration scripts, retaining such modifications
 over updates will be tedious. As a result, there are several environment
@@ -54,14 +54,14 @@ common configuration values.
 Currently you can override WINEPREFIX, INSTALLDIR, and SDKVERSION via the
 following environment variable hierarchy (from highest to lowest precedence):
 
-MSVC_<MAJOR><MINOR>_*   # MSVC_14U2_INSTALLDIR
-MSVC_<MAJOR>_*          # MSVC_14_INSTALLDIR
-MSVC_*                  # MSVC_INSTALLDIR
+MSVC_<MAJOR>_<MINOR>_*   # MSVC_14_2_INSTALLDIR
+MSVC_<MAJOR>_*           # MSVC_14_INSTALLDIR
+MSVC_*                   # MSVC_INSTALLDIR
 
 The WINEPREFIX value corresponds to the WINEPREFIX Wine environment variable
 that allows one to use an alternative (to ~/.wine) root directory. You can
-use it, for example, to maintain multiple Visual Studio updates (e.g., 14u1,
-14u2, 14u3) which otherwise cannot coexist in a single installation.
+use it, for example, to maintain multiple Visual Studio updates (e.g., 14.1,
+14.2, 14.3) which otherwise cannot coexist in a single installation.
 
 The INSTALLDIR directory can be used to alter the Visual Studio installation
 directory name (not path; the default is "Microsoft Visual Studio NN.0").
@@ -75,7 +75,7 @@ It should be in the 10.0.NNNNN form. If it is not specified, then the latest
 installed is used. Note that this value does not apply to Windows 8.1 and
 earlier SDKs; those versions are hardcoded in the confguration scripts.
 
-Note also the the below instructions include a call to a script that adds
+Note also that the below instructions include a call to a script that adds
 lower-case symlinks for upper-case named headers. This normally fixes the
 bulk of the issues associated #include directives that spell header names
 differently compared to the actual file names. There are, however, rare
@@ -214,7 +214,7 @@ $ cp -r "/mnt/Program Files (x86)/Microsoft Visual Studio 14.0/VC" \
 $ cp "/mnt/Program Files (x86)/Microsoft Visual Studio 14.0/VC/redist/x86/Microsoft.VC140.CRT/msvcp140.dll" \
   ".wine/drive_c/Program Files (x86)/Microsoft Visual Studio 14.0/VC/bin/"
 
-Remove Microsoft's "experience improvement data uploade" which crashes:
+Remove Microsoft's "experience improvement data uploader" which crashes:
 
 $ find ".wine/drive_c/Program Files (x86)/Microsoft Visual Studio 14.0/" \
   -name vctip.exe -exec rm -f '{}' ';'
@@ -284,6 +284,11 @@ $ mkdir -p ".wine/drive_c/Program Files (x86)/Microsoft Visual Studio 15.0"
 $ cp -r "/mnt/Program Files (x86)/Microsoft Visual Studio 15.0/VC" \
   ".wine/drive_c/Program Files (x86)/Microsoft Visual Studio 15.0/"
 
+Remove Microsoft's "experience improvement data uploader" which crashes:
+
+$ find ".wine/drive_c/Program Files (x86)/Microsoft Visual Studio 15.0/" \
+  -name vctip.exe -exec rm -f '{}' ';'
+
 $ mkdir -p ".wine/drive_c/Program Files (x86)/Windows Kits"
 $ cp -r "/mnt/Program Files (x86)/Windows Kits/10" \
   ".wine/drive_c/Program Files (x86)/Windows Kits/"
@@ -296,7 +301,7 @@ $ etc/lowercase-headers \
 Installing via the redistributable DLLs still does not work as of Wine 1.9.8.
 Instead, we have to manually copy a bunch of DLLs from:
 
-.wine/.../VC/Redist/MSVC/14.10.NNNNN/{x86 x64}/Microsoft.VC150.CRT/
+.wine/.../VC/Redist/MSVC/14.10.NNNNN/{x86 x64}/Microsoft.VC141.CRT/
 
 And:
 
@@ -335,6 +340,24 @@ Note also that if you plan to run tests built against the debug runtime, then
 also copy ucrtbased.dll, vcruntime140d.dll, and msvcp140d.dll from Windows
 Kits/10/bin/.../ucrt/ and VC/Redist/.../debug_noredist/.
 
+
+Copy and Setup Visual Studio 16
+-------------------------------
+
+The setup for 16 is similar to that of 15. Follow instructions in "Copy and
+Setup Visual Studio 15", replacing year 2017 and version 15 with 2019 and 16,
+respectively.
+
+Regarding the redistributable DLLs, note that for Wine 4.0 (Staging) only the
+following overrides appear to be necessary:
+
+  vcruntime140.dll
+  msvcp140.dll
+
+Also note that linking for 32-bit builds may fail (see msvc-16/msvc-16.0-32
+for details).
+
+
 Test
 ----
 
@@ -371,9 +394,9 @@ Note also that we use the 64-to-32-bit cross-compiler for 32-bit builds.
 Come up with Configuration(s)
 -----------------------------
 
-By examining the INCLUDE and LIB environment variables in the corresponding
-Visual Studio Command Prompts, determine which SDK/CRT versions are used,
-executable paths for the tools (use the where command), etc.
+By examining the INCLUDE, IFCPATH and LIB environment variables in the
+corresponding Visual Studio Command Prompts, determine which SDK/CRT versions
+are used, executable paths for the tools (use the where command), etc.
 
 Based on this information create the corresponding configuration file(s) in
 msvc-NN/ subdirectory. Use the existing configuration from the closest version

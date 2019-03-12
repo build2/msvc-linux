@@ -13,23 +13,26 @@ function info () { echo "$*" 1>&2; }
 function error () { info "$*"; exit 1; }
 
 # Split the argument. The <version> itself should be <major>[minor] where
-# <major> is digit-dot-only and minor should start with a non-digit-dot (e.g.,
-# u1, rc1, etc).
+# <major> is digit-only and minor should start with the dot (e.g., .0).
 #
 arg=($(echo "$(basename "$src_exe")" | \
-  sed -n -e 's/^\([^-]*\)-\([0-9.]*\)\([^-]*\)-\([^-]*\)$/\1 \4 \2 \3/p'))
+  sed -n -e 's/^\([^-]*\)-\([0-9]*\)\(\.[^-]\{1,\}\)\{0,1\}-\([^-]*\)$/\1 \4 \2 \3/p'))
 tool="${arg[0]}"
 target="${arg[1]}"
 
 major="${arg[2]}"
 minor="${arg[3]}"
 
-MAJOR="${arg[2]^^}"
-MINOR="${arg[3]^^}"
+MAJOR="${major^^}"
+MINOR="${minor^^}"
 
 if [ -z "$tool" -o -z "$major" -o -z "$target" ]; then
   error "invalid top-level script name"
 fi
+
+# For the minor version used in variable names replace dots with underscores.
+#
+MINOR="$(echo "$MINOR" | sed -e 's/\./_/g')"
 
 # Calculate MSVC_{WINEPREFIX,INSTALLDIR,SDKVERSION}.
 #

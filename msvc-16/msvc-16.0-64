@@ -1,15 +1,15 @@
 #! /usr/bin/env bash
 
-# file      : msvc-14/msvc-14u3-64
+# file      : msvc-16/msvc-16.0-64
 # copyright : Copyright (c) 2014-2019 Code Synthesis Ltd
 # license   : MIT; see accompanying LICENSE file
 
-# MSVC 14U3 64-bit setup/configuration.
+# MSVC 64-bit setup/configuration.
 #
 # Should set the SDKBIN, VCBIN, VCDLL, INCLUDE, and LIB variables.
 #
 if [ -z "$MSVC_INSTALLDIR" ]; then
-  MSVC_INSTALLDIR="Microsoft Visual Studio 14.0"
+  MSVC_INSTALLDIR="Microsoft Visual Studio 16.0"
 fi
 
 if [ -z "$MSVC_SDKVERSION" ]; then
@@ -20,21 +20,15 @@ fi
 # SDK
 #
 SDK="C:\\Program Files (x86)\\Windows Kits\\10"
-SDKBIN="$SDK\\bin\\x64"
-
-# Originally "10.0.14393" (if upgrade 14u2) or "10.0.10240" (if clean install).
-#
 SDKVER="$MSVC_SDKVERSION.0"
+SDKBIN="$SDK\\bin\\$SDKVER\\x64"
 
-INCLUDE="$SDK\\include\\$SDKVER\\shared;$SDK\\include\\$SDKVER\\um;$SDK\\include\\$SDKVER\\winrt"
+INCLUDE="$SDK\\include\\$SDKVER\\shared;$SDK\\include\\$SDKVER\\um;$SDK\\include\\$SDKVER\\winrt;$SDK\\include\\$SDKVER\\cppwinrt"
 LIB="$SDK\\lib\\$SDKVER\\um\\x64"
 
 # CRT
 #
 CRT="C:\\Program Files (x86)\\Windows Kits\\10"
-
-# Originally "10.0.14393" (if upgrade 14u2) or "10.0.10240" (if clean install).
-#
 CRTVER="$MSVC_SDKVERSION.0"
 
 INCLUDE="$CRT\\include\\$CRTVER\\ucrt;$INCLUDE"
@@ -42,9 +36,10 @@ LIB="$CRT\\lib\\$CRTVER\\ucrt\\x64;$LIB"
 
 # VC
 #
-VC="C:\\Program Files (x86)\\$MSVC_INSTALLDIR\\VC"
-VCBIN="$VC\\bin\\amd64"
-VCDLL="$VC\\bin\\amd64"
+VC="C:\\Program Files (x86)\\$MSVC_INSTALLDIR\\VC\\Tools\\MSVC\\14.20.27404"
+VCBIN="$VC\\bin\\HostX64\\x64"
+VCDLL="$VC\\bin\\HostX64\\x64"
 
 INCLUDE="$VC\\include;$INCLUDE"
-LIB="$VC\\lib\\amd64;$LIB"
+IFCPATH="$VC\\ifc\\x64"
+LIB="$VC\\lib\\x64;$LIB"

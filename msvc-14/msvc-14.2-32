@@ -1,10 +1,10 @@
 #! /usr/bin/env bash
 
-# file      : msvc-14/msvc-14u0-32
+# file      : msvc-14/msvc-14.2-32
 # copyright : Copyright (c) 2014-2019 Code Synthesis Ltd
 # license   : MIT; see accompanying LICENSE file
 
-# MSVC 14 32-bit setup/configuration (note: using 64-to-32 cross-compiler).
+# MSVC 14U2 32-bit setup/configuration (note: using 64-to-32 cross-compiler).
 #
 # Should set the SDKBIN, VCBIN, VCDLL, INCLUDE, and LIB variables.
 #
@@ -13,22 +13,23 @@ if [ -z "$MSVC_INSTALLDIR" ]; then
 fi
 
 if [ -z "$MSVC_SDKVERSION" ]; then
-  source "$src_dir/msvc-common/msvc-sdk"
+  source "$src_dir/msvc-common/msvc-sdk-common"
   MSVC_SDKVERSION="$(windows10_sdkversion)"
 fi
 
 # SDK
 #
-SDK="C:\\Program Files (x86)\\Windows Kits\\8.1"
+SDK="C:\\Program Files (x86)\\Windows Kits\\10"
 SDKBIN="$SDK\\bin\\x86"
+SDKVER="$MSVC_SDKVERSION.0" # Originally "10.0.10586".
 
-INCLUDE="$SDK\\include\\shared;$SDK\\include\\um;$SDK\\include\\winrt"
-LIB="$SDK\\lib\\winv6.3\\um\\x86"
+INCLUDE="$SDK\\include\\$SDKVER\\shared;$SDK\\include\\$SDKVER\\um;$SDK\\include\\$SDKVER\\winrt"
+LIB="$SDK\\lib\\$SDKVER\\um\\x86"
 
 # CRT
 #
 CRT="C:\\Program Files (x86)\\Windows Kits\\10"
-CRTVER="$MSVC_SDKVERSION.0" # Originally "10.0.10150".
+CRTVER="$MSVC_SDKVERSION.0" # Originally "10.0.10586".
 
 INCLUDE="$CRT\\include\\$CRTVER\\ucrt;$INCLUDE"
 LIB="$CRT\\lib\\$CRTVER\\ucrt\\x86;$LIB"
