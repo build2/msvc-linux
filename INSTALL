@@ -410,7 +410,7 @@ Create the driver scripts corresponding to each new configuration. For example
 (replace <version> and <target>):
 
 for t in cl link lib mt rc; do \
-  cp cl-11-32 $t-<version>-<target>; done
+  cp $t-16.0-32 $t-<version>-<target>; done
 
 
 Copy and Setup Visual Studio on Linux
