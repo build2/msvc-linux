@@ -143,7 +143,7 @@ filter (const char* s, size_t n, ostream& os)
 
       try
       {
-        path::traits::realize (pd);
+        path::traits_type::realize (pd);
 
         assert (!pd.empty ());
 
