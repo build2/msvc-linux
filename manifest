@@ -4,7 +4,8 @@ version: 0.11.0-a.0.z
 project: build2
 summary: MS Visual C++ as cross-compiler driver scripts
 license: MIT
-tags: msvc, vc, c++, script
+topics: build toolchain
+keywords: msvc vc wine
 description-file: README
 changes-file: NEWS
 url: https://build2.org
