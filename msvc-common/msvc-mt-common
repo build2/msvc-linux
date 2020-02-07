@@ -1,7 +1,6 @@
 #! /usr/bin/env bash
 
 # file      : msvc-common/msvc-mt-common
-# copyright : Copyright (c) 2014-2019 Code Synthesis Ltd
 # license   : MIT; see accompanying LICENSE file
 
 # Note: shouldn't be executed directly, src_dir must be set.

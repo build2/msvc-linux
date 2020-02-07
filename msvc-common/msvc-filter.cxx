@@ -1,5 +1,4 @@
 // file      : msvc-common/msvc-filter.cxx -*- C++ -*-
-// copyright : Copyright (c) 2014-2019 Code Synthesis Ltd
 // license   : MIT; see accompanying LICENSE file
 
 #include <sys/time.h>   // timeval

@@ -1,7 +1,6 @@
 #! /usr/bin/env bash
 
 # file      : msvc-11/msvc-11-32
-# copyright : Copyright (c) 2014-2019 Code Synthesis Ltd
 # license   : MIT; see accompanying LICENSE file
 
 # MSVC 11 32-bit setup/configuration.

@@ -1,7 +1,6 @@
 #! /usr/bin/env bash
 
 # file      : msvc-15/msvc-15.7-64
-# copyright : Copyright (c) 2014-2019 Code Synthesis Ltd
 # license   : MIT; see accompanying LICENSE file
 
 # MSVC 64-bit setup/configuration.

@@ -1,7 +1,6 @@
 #! /usr/bin/env bash
 
 # file      : etc/lowercase-headers
-# copyright : Copyright (c) 2014-2019 Code Synthesis Ltd
 # license   : MIT; see accompanying LICENSE file
 
 # Create all-lowercase symlinks for .h headers in <dir> (recursively) that
