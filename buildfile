@@ -9,10 +9,10 @@ sh{*}:
   install = bin/
 }
 
-./: msvc-common/exe{msvc-filter}               \
-    sh{cl-* lib-* link-* mt-* rc-*}            \
-    sh{msvc-** -msvc-common/msvc-filter*}      \
-    doc{INSTALL LICENSE COPYRIGHT NEWS README} \
+./: msvc-common/exe{msvc-filter}             \
+    sh{cl-* lib-* link-* mt-* rc-*}          \
+    sh{msvc-** -msvc-common/msvc-filter*}    \
+    doc{INSTALL LICENSE AUTHORS NEWS README} \
     manifest
 
 msvc-common/
