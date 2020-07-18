@@ -1,6 +1,6 @@
 : 1
 name: msvc-linux
-version: 0.13.0-a.0.z
+version: 0.13.0
 project: build2
 summary: MS Visual C++ as cross-compiler driver scripts
 license: MIT
@@ -14,6 +14,6 @@ src-url: https://git.build2.org/cgit/etc/msvc-linux/tree/
 email: users@build2.org
 build-warning-email: builds@build2.org
 requires: c++14
-depends: * build2 >= 0.13.0-
-depends: * bpkg >= 0.13.0-
-depends: libbutl [0.13.0-a.0.1 0.13.0-a.1)
+depends: * build2 >= 0.13.0
+depends: * bpkg >= 0.13.0
+depends: libbutl ^0.13.0
