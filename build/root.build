@@ -10,4 +10,7 @@ ixx{*}: extension = ixx
 txx{*}: extension = txx
 cxx{*}: extension = cxx
 
+if ($cxx.id == 'gcc')
+  cxx.coptions += -Wno-maybe-uninitialized -Wno-free-nonheap-object # libbutl
+
 cxx.poptions =+ "-I$out_root" "-I$src_root"
