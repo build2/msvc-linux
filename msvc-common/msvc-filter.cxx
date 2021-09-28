@@ -14,11 +14,11 @@
 #include <system_error>
 #include <unordered_map>
 
-#include <libbutl/path.mxx>     // path::traits::realize()
-#include <libbutl/utility.mxx>  // alpha(), throw_*_error()
-#include <libbutl/process.mxx>
-#include <libbutl/optional.mxx>
-#include <libbutl/fdstream.mxx>
+#include <libbutl/path.hxx>     // path::traits::realize()
+#include <libbutl/utility.hxx>  // alpha(), throw_*_error()
+#include <libbutl/process.hxx>
+#include <libbutl/optional.hxx>
+#include <libbutl/fdstream.hxx>
 
 #include <msvc-common/version.hxx>
 
