@@ -1,2 +1,19 @@
-Note that while this project is called msvc-linux, you may be able to use it
-on other UNIX-like systems supported by Wine.
+Cross-compiling from UNIX to Windows with MSVC using Wine.
+
+NOTE: we no longer recommend using this approach unless you absolutely
+must. Firstly, the whole setup is very hacky and brittle (and potentially
+illegal: we were told it's against the license to run MSVC like that) and
+often doesn't work with the most recent versions of MSVC (because Wine hasn't
+caught up on the new APIs yet). Also, there are edge cases where build2 does
+not fully support this "mode" of running MSVC. It works for projects that
+don't do anything unusual, but, for example, you won't be able to build
+anything that requires MASM. We believe if you must test with MSVC, the only
+sane way to do it is with a Windows VM (which is what we do on our CI). If you
+just need to test that your code builds for Windows, another option is to use
+Clang and the LLVM linker (lld-link) as a cross-compiler. With this approach
+you will only need to copy the MSVC standard library and PlatformSDK (and
+won't need to mess with Wine).
+
+See INSTALL for setup instructions. Note that while this project is called
+msvc-linux, you may be able to use it on other UNIX-like systems supported
+by Wine.
