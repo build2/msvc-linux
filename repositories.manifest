@@ -3,4 +3,4 @@ summary: MS Visual C++ as cross-compiler driver scripts repository
 
 :
 role: prerequisite
-location: ../libbutl.git##HEAD
+location: ../libbutl.git#HEAD
